@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Serdar — План -15 кг</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0f0f0f;
+    --bg2: #181818;
+    --bg3: #222222;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.14);
+    --text: #f0ede8;
+    --text2: #9a9690;
+    --text3: #5a5755;
+    --green: #4a9e2f;
+    --green-bg: rgba(74,158,47,0.12);
+    --green-text: #7dcb5a;
+    --amber: #c47f1a;
+    --amber-bg: rgba(196,127,26,0.12);
+    --amber-text: #e8a84a;
+    --blue: #2a7fd4;
+    --blue-bg: rgba(42,127,212,0.12);
+    --blue-text: #5aaff0;
+    --red: #c43a3a;
+    --red-bg: rgba(196,58,58,0.12);
+    --red-text: #f07070;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  body.light {
+    --bg: #f5f3ef;
+    --bg2: #ffffff;
+    --bg3: #edeae5;
+    --border: rgba(0,0,0,0.08);
+    --border2: rgba(0,0,0,0.14);
+    --text: #1a1a18;
+    --text2: #6b6760;
+    --text3: #aaa89f;
+    --green: #3a8a22;
+    --green-bg: rgba(58,138,34,0.1);
+    --green-text: #2d6e1a;
+    --amber: #b06a0a;
+    --amber-bg: rgba(176,106,10,0.1);
+    --amber-text: #8a5008;
+    --blue: #1a6bbf;
+    --blue-bg: rgba(26,107,191,0.1);
+    --blue-text: #1550a0;
+    --red: #b02e2e;
+    --red-bg: rgba(176,46,46,0.1);
+    --red-text: #8a2020;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, .num { font-family: 'Syne', sans-serif; }
+
+  /* HEADER */
+  .header {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 1.5rem 1.25rem 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .header-title { font-size: 22px; font-weight: 800; color: var(--text); line-height: 1.1; }
+  .header-sub { font-size: 12px; color: var(--text2); margin-top: 3px; letter-spacing: 0.3px; }
+
+  .stats-row {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+
+  .stat-pill {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 4px 10px;
+    font-size: 12px;
+    color: var(--text2);
+  }
+
+  .stat-pill span { color: var(--text); font-weight: 500; }
+
+  /* NAV */
+  .nav {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 0 1.25rem;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav::-webkit-scrollbar { display: none; }
+
+  .nbtn {
+    padding: 12px 16px;
+    border: none;
+    background: transparent;
+    color: var(--text3);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+    letter-spacing: 0.2px;
+  }
+
+  .nbtn:hover { color: var(--text2); }
+  .nbtn.on { color: var(--text); border-bottom-color: var(--green); }
+
+  /* MAIN */
+  .main { max-width: 680px; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; }
+
+  .pg { display: none; }
+  .pg.on { display: block; }
+
+  /* SECTION LABEL */
+  .sec-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 12px;
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem;
+    margin-bottom: 10px;
+  }
+
+  .card-title { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 6px; }
+
+  /* BOXES */
+  .box { border-radius: var(--radius-sm); padding: 10px 14px; font-size: 13px; margin-bottom: 10px; line-height: 1.55; }
+  .box-green { background: var(--green-bg); color: var(--green-text); border-left: 2px solid var(--green); }
+  .box-amber { background: var(--amber-bg); color: var(--amber-text); border-left: 2px solid var(--amber); }
+  .box-blue { background: var(--blue-bg); color: var(--blue-text); border-left: 2px solid var(--blue); }
+  .box-red { background: var(--red-bg); color: var(--red-text); border-left: 2px solid var(--red); }
+
+  /* DIVIDER */
+  .div { height: 1px; background: var(--border); margin: 1.25rem 0; }
+
+  /* HERO STATS */
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 1.25rem;
+  }
+
+  @media (max-width: 400px) {
+    .hero-stats { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .hstat {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    text-align: center;
+  }
+
+  .hstat-val { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700; color: var(--text); }
+  .hstat-lbl { font-size: 11px; color: var(--text3); margin-top: 2px; }
+
+  /* PHASES */
+  .phases {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-bottom: 1.25rem;
+  }
+
+  @media (min-width: 500px) {
+    .phases { grid-template-columns: repeat(4, 1fr); }
+  }
+
+  .phase {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+  }
+
+  .phase-wk { font-size: 10px; color: var(--text3); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .phase-kg { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; color: var(--text); }
+  .phase-desc { font-size: 11px; color: var(--text2); margin-top: 3px; line-height: 1.4; }
+  .phase-bar { height: 2px; border-radius: 2px; margin-top: 8px; }
+
+  /* BIG RULES */
+  .big-rule {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--blue);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 12px 14px;
+    margin-bottom: 8px;
+  }
+  .big-rule-title { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+  .big-rule-sub { font-size: 12px; color: var(--text2); line-height: 1.5; }
+
+  /* TIMELINE */
+  .tl { padding-left: 20px; position: relative; }
+  .tl::before { content: ''; position: absolute; left: 5px; top: 0; bottom: 0; width: 1px; background: var(--border); }
+
+  .tl-item { position: relative; margin-bottom: 14px; }
+  .tl-dot { position: absolute; left: -18px; top: 5px; width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid var(--border2); background: var(--bg); }
+  .tl-dot.g { border-color: var(--green); background: var(--green-bg); }
+  .tl-dot.b { border-color: var(--blue); background: var(--blue-bg); }
+  .tl-dot.a { border-color: var(--amber); background: var(--amber-bg); }
+  .tl-dot.r { border-color: var(--red); background: var(--red-bg); }
+
+  .tl-time { font-size: 11px; font-weight: 500; color: var(--text3); margin-bottom: 1px; }
+  .tl-title { font-size: 13px; font-weight: 500; color: var(--text); }
+  .tl-sub { font-size: 12px; color: var(--text2); margin-top: 2px; line-height: 1.4; }
+
+  /* MACROS */
+  .macro-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .macro-label { font-size: 12px; color: var(--text2); min-width: 95px; }
+  .macro-track { flex: 1; height: 6px; background: var(--bg3); border-radius: 3px; overflow: hidden; }
+  .macro-fill { height: 100%; border-radius: 3px; }
+  .macro-val { font-size: 12px; font-weight: 500; color: var(--text); min-width: 55px; text-align: right; }
+
+  /* PORTIONS */
+  .portions { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 1rem; }
+  @media (min-width: 500px) { .portions { grid-template-columns: repeat(3, 1fr); } }
+
+  .portion {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px;
+  }
+  .portion-icon { font-size: 20px; margin-bottom: 6px; }
+  .portion-what { font-size: 13px; font-weight: 500; color: var(--text); }
+  .portion-how { font-size: 11px; color: var(--text2); margin-top: 2px; }
+  .portion-g { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; color: var(--text); margin-top: 4px; }
+
+  /* MEAL TABS */
+  .sub-tabs { display: flex; gap: 4px; margin-bottom: 1rem; }
+  .stab {
+    padding: 5px 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    font-size: 12px;
+    cursor: pointer;
+    background: transparent;
+    color: var(--text2);
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+  }
+  .stab.on { background: var(--bg3); color: var(--text); border-color: var(--border2); font-weight: 500; }
+  .sub-pg { display: none; }
+  .sub-pg.on { display: block; }
+
+  /* WEEK MENU */
+  .day-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  @media (min-width: 520px) { .day-grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (min-width: 680px) { .day-grid { grid-template-columns: repeat(4, 1fr); } }
+
+  .day-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+  }
+  .day-name { font-size: 11px; font-weight: 500; color: var(--text3); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .meal-slot { font-size: 11px; color: var(--text2); padding: 3px 0; border-bottom: 1px solid var(--border); line-height: 1.3; }
+  .meal-slot:last-child { border: none; }
+  .meal-slot b { display: block; font-size: 9px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 1px; }
+
+  /* EXERCISE */
+  .ex-block {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 10px;
+  }
+  .ex-head {
+    background: var(--bg3);
+    padding: 10px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+  }
+  .ex-head-title { font-size: 13px; font-weight: 500; color: var(--text); }
+  .ex-head-badge { font-size: 11px; color: var(--blue-text); background: var(--blue-bg); padding: 2px 8px; border-radius: 20px; }
+  .ex-body { padding: 10px 14px; }
+  .ex-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+  .ex-row:last-child { border: none; }
+  .ex-name { color: var(--text2); }
+  .ex-val { font-weight: 500; color: var(--text); }
+  .ex-note { font-size: 11px; color: var(--text3); margin-top: 4px; font-style: italic; }
+
+  /* SUPPLEMENTS */
+  .supp-item { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); align-items: flex-start; }
+  .supp-item:last-child { border: none; }
+  .sdot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+  .sname { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 3px; }
+  .sdesc { font-size: 12px; color: var(--text2); line-height: 1.5; }
+  .stag { display: inline-block; font-size: 10px; padding: 2px 8px; border-radius: 10px; margin-top: 5px; }
+  .stag-g { background: var(--green-bg); color: var(--green-text); }
+  .stag-a { background: var(--amber-bg); color: var(--amber-text); }
+
+  /* SHOP */
+  .shop-group { margin-bottom: 1.25rem; }
+  .shop-group-title { font-size: 10px; font-weight: 500; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+
+  .shop-item {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .shop-item:last-child { border: none; }
+  .shop-item.done { opacity: 0.45; }
+
+  .sbox {
+    width: 16px;
+    height: 16px;
+    border: 1.5px solid var(--border2);
+    border-radius: 4px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+  }
+  .sbox.done { background: var(--green); border-color: var(--green); }
+  .sbox.done::after { content: '✓'; color: white; font-size: 10px; font-weight: 700; }
+
+  .shop-info { flex: 1; }
+  .shop-ru { font-size: 13px; color: var(--text); line-height: 1.3; }
+  .shop-de { font-size: 11px; color: var(--blue-text); margin-top: 2px; }
+  .shop-price { font-size: 12px; font-weight: 500; color: var(--text2); white-space: nowrap; padding-top: 2px; }
+
+  .total-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0 4px;
+    border-top: 1px solid var(--border2);
+    margin-top: 4px;
+  }
+  .total-lbl { font-size: 13px; color: var(--text2); }
+  .total-val { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; color: var(--text); }
+
+  /* DAILY CHECKLIST */
+  .ci {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .ci:last-child { border: none; }
+  .ci.done .ci-text { color: var(--text3); text-decoration: line-through; }
+
+  .ci-box {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    border: 1.5px solid var(--border2);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+  }
+  .ci-box.done { background: var(--green); border-color: var(--green); }
+  .ci-box.done::after { content: '✓'; color: white; font-size: 10px; font-weight: 700; }
+  .ci-text { font-size: 13px; color: var(--text); transition: color 0.15s; }
+
+  /* PROGRESS TRACKER */
+  .week-tracker {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 1rem;
+  }
+  @media (max-width: 400px) { .week-tracker { grid-template-columns: repeat(2, 1fr); } }
+
+  .wk-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .wk-card.done { border-color: var(--green); background: var(--green-bg); }
+  .wk-num { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; color: var(--text3); }
+  .wk-card.done .wk-num { color: var(--green-text); }
+  .wk-label { font-size: 10px; color: var(--text3); margin-top: 2px; }
+  .wk-card.done .wk-label { color: var(--green-text); }
+
+  /* Weight input */
+  .weight-input-row { display: flex; gap: 8px; align-items: center; margin-bottom: 1rem; }
+  .weight-input {
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-sm);
+    padding: 8px 12px;
+    color: var(--text);
+    font-size: 15px;
+    font-family: 'DM Sans', sans-serif;
+    width: 100px;
+    outline: none;
+  }
+  .weight-input:focus { border-color: var(--green); }
+  .weight-btn {
+    background: var(--green);
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 8px 16px;
+    color: white;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: opacity 0.15s;
+  }
+  .weight-btn:hover { opacity: 0.85; }
+
+  .weight-history { font-size: 13px; color: var(--text2); margin-bottom: 8px; }
+  .weight-entry { display: inline-block; background: var(--bg3); border: 1px solid var(--border); border-radius: 20px; padding: 3px 10px; font-size: 12px; margin: 3px 3px 3px 0; color: var(--text); }
+
+  /* RESET BTN */
+  .theme-btn {
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    border-radius: 20px;
+    padding: 5px 12px;
+    color: var(--text2);
+    font-size: 12px;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+  }
+  .theme-btn:hover { color: var(--text); border-color: var(--border2); }
+    background: transparent;
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-sm);
+    padding: 6px 12px;
+    color: var(--text3);
+    font-size: 12px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    margin-top: 8px;
+    transition: all 0.15s;
+  }
+  .reset-btn:hover { color: var(--red-text); border-color: var(--red); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div>
+      <div class="header-title">Serdar — план -15 кг</div>
+      <div class="header-sub">Без срывов. Под твою реальную жизнь.</div>
+    </div>
+    <button class="theme-btn" onclick="toggleTheme()" id="theme-btn">🌙 Тёмная</button>
+  </div>
+  <div class="stats-row">
+    <div class="stat-pill"><span>96.5</span> кг старт</div>
+    <div class="stat-pill">→ <span>82</span> кг цель</div>
+    <div class="stat-pill"><span>1900</span> ккал/день</div>
+    <div class="stat-pill"><span>12–16</span> недель</div>
+  </div>
+</div>
+
+<nav class="nav">
+  <button class="nbtn on" onclick="sw('rules',this)">Правила</button>
+  <button class="nbtn" onclick="sw('schedule',this)">Расписание</button>
+  <button class="nbtn" onclick="sw('food',this)">Питание</button>
+  <button class="nbtn" onclick="sw('training',this)">Тренировки</button>
+  <button class="nbtn" onclick="sw('supps',this)">Добавки</button>
+  <button class="nbtn" onclick="sw('shop',this)">Penny</button>
+  <button class="nbtn" onclick="sw('daily',this)">День</button>
+  <button class="nbtn" onclick="sw('tracker',this)">Трекер</button>
+</nav>
+
+<main class="main">
+
+<!-- RULES -->
+<div id="pg-rules" class="pg on">
+  <div class="sec-label">Главные правила</div>
+  <div class="hero-stats">
+    <div class="hstat"><div class="hstat-val">96.5</div><div class="hstat-lbl">кг сейчас</div></div>
+    <div class="hstat"><div class="hstat-val">82</div><div class="hstat-lbl">кг цель</div></div>
+    <div class="hstat"><div class="hstat-val">1900</div><div class="hstat-lbl">ккал/день</div></div>
+    <div class="hstat"><div class="hstat-val">32.2</div><div class="hstat-lbl">ИМТ сейчас</div></div>
+  </div>
+
+  <div class="big-rule" style="border-left-color:#2a7fd4"><div class="big-rule-title">1 — Стабильность важнее идеала</div><div class="big-rule-sub">70% плана каждый день лучше, чем 100% три дня и срыв. Один плохой день — не повод бросать.</div></div>
+  <div class="big-rule" style="border-left-color:#4a9e2f"><div class="big-rule-title">2 — Живот убирается едой, не упражнениями</div><div class="big-rule-sub">Питание = 70% результата. Убери сахар, газировку и выпечку — уйдёт 3–5 кг само.</div></div>
+  <div class="big-rule" style="border-left-color:#c47f1a"><div class="big-rule-title">3 — Еда должна быть готова заранее</div><div class="big-rule-sub">Готовишь в субботу и среду на 3–4 дня. Нет готовой еды — ты проиграл.</div></div>
+  <div class="big-rule" style="border-left-color:#c43a3a"><div class="big-rule-title">4 — Сон = жир</div><div class="big-rule-sub">Плохой сон → кортизол → тяга к сладкому → вес стоит. Спать до 23:30 — не опция.</div></div>
+  <div class="big-rule" style="border-left-color:#8a5fd4"><div class="big-rule-title">5 — Не добавляй, убирай</div><div class="big-rule-sub">2 недели строго по плану. Не усложняй. Не добавляй тренировки. Потом — усиливай.</div></div>
+
+  <div class="div"></div>
+  <div class="sec-label">Прогноз по фазам</div>
+  <div class="phases">
+    <div class="phase"><div class="phase-wk">1–2 нед.</div><div class="phase-kg">−2–3 кг</div><div class="phase-desc">Уходит вода. Мотивация высокая.</div><div class="phase-bar" style="background:#2a7fd4"></div></div>
+    <div class="phase"><div class="phase-wk">3–6 нед.</div><div class="phase-kg">−3–5 кг</div><div class="phase-desc">Жир начинает уходить. Живот меньше.</div><div class="phase-bar" style="background:#4a9e2f"></div></div>
+    <div class="phase"><div class="phase-wk">7–12 нед.</div><div class="phase-kg">−5–7 кг</div><div class="phase-desc">Тело сушится. Виден прогресс.</div><div class="phase-bar" style="background:#c47f1a"></div></div>
+    <div class="phase"><div class="phase-wk">12–16 нед.</div><div class="phase-kg">−15 кг</div><div class="phase-desc">Цель. Держишь режим.</div><div class="phase-bar" style="background:#4a9e2f"></div></div>
+  </div>
+  <div class="box box-blue">Взвешивайся 1 раз в неделю — утром, натощак. Не каждый день — будешь нервничать от колебаний воды.</div>
+</div>
+
+<!-- SCHEDULE -->
+<div id="pg-schedule" class="pg">
+  <div class="sec-label">Будни — по часам</div>
+  <div class="tl">
+    <div class="tl-item"><div class="tl-dot b"></div><div class="tl-time">06:00</div><div class="tl-title">Подъём → упражнения (8 мин)</div><div class="tl-sub">Встал, коврик, делаешь. Без телефона. Комплекс → вкладка «Тренировки».</div></div>
+    <div class="tl-item"><div class="tl-dot g"></div><div class="tl-time">06:20</div><div class="tl-title">Завтрак №1</div><div class="tl-sub">3 яйца + 1 кусок цельнозернового хлеба + огурец/помидор. 5 минут.</div></div>
+    <div class="tl-item"><div class="tl-dot a"></div><div class="tl-time">07:15</div><div class="tl-title">Садик с дочкой</div><div class="tl-sub">Возвращаешься 08:30–08:45</div></div>
+    <div class="tl-item"><div class="tl-dot g"></div><div class="tl-time">09:00</div><div class="tl-title">Завтрак №2 + креатин 5г</div><div class="tl-sub">Овсянка 60г + банан + орехи 15г. Кофе без сахара. Курс / практика.</div></div>
+    <div class="tl-item"><div class="tl-dot g"></div><div class="tl-time">12:30</div><div class="tl-title">Обед — не пропускать!</div><div class="tl-sub">Курица/рыба 180г + гречка/рис 80г (сухого) + овощи + 1 ст.л. оливкового масла</div></div>
+    <div class="tl-item"><div class="tl-dot b"></div><div class="tl-time">13:00</div><div class="tl-title">Движение 10 мин</div><div class="tl-sub">Ходьба. Разгрузка от сидения. Если практика — пропусти, не форсируй.</div></div>
+    <div class="tl-item"><div class="tl-dot a"></div><div class="tl-time">15:30</div><div class="tl-title">Перекус</div><div class="tl-sub">Йогурт 200г ИЛИ яблоко + орехи 15г. Не оба сразу — лишние 300 ккал.</div></div>
+    <div class="tl-item"><div class="tl-dot g"></div><div class="tl-time">17:30</div><div class="tl-title">Ужин семьёй</div><div class="tl-sub">Рыба / яйца / творог + овощи много. Без риса и гречки вечером.</div></div>
+    <div class="tl-item"><div class="tl-dot b"></div><div class="tl-time">20:00</div><div class="tl-title">Дочь спать → тренировка</div><div class="tl-sub">Пн/Ср/Пт — 15–20 мин комплекс. Вт/Чт/Сб — только растяжка 10 мин.</div></div>
+    <div class="tl-item"><div class="tl-dot a"></div><div class="tl-time">21:30</div><div class="tl-title">Домашка / отдых</div><div class="tl-sub">Calcium + Magnesium + Zinc — здесь, после ужина.</div></div>
+    <div class="tl-item"><div class="tl-dot r"></div><div class="tl-time">23:30</div><div class="tl-title">Сон — не позже!</div><div class="tl-sub">Регулярно после 00:00 → вес стоит. Это физиология, не страшилка.</div></div>
+  </div>
+  <div class="div"></div>
+  <div class="sec-label">Суббота — meal prep</div>
+  <div class="box box-amber">Готовишь 1 раз на 3–4 дня: курица 1.2 кг + рис/гречка 350г + нарезать овощи. Среда — второй раз: рыба/фарш + гречка. Маленький холодильник — не готовь на всю неделю.</div>
+</div>
+
+<!-- FOOD -->
+<div id="pg-food" class="pg">
+  <div class="sec-label">Формула питания</div>
+  <div class="card" style="margin-bottom:1rem">
+    <div class="card-title" style="margin-bottom:10px">1900 ккал/день</div>
+    <div class="macro-row"><span class="macro-label">Белок 180г</span><div class="macro-track"><div class="macro-fill" style="width:38%;background:#2a7fd4"></div></div><span class="macro-val">720 ккал</span></div>
+    <div class="macro-row"><span class="macro-label">Жиры 65г</span><div class="macro-track"><div class="macro-fill" style="width:30%;background:#c47f1a"></div></div><span class="macro-val">585 ккал</span></div>
+    <div class="macro-row"><span class="macro-label">Углеводы 150г</span><div class="macro-track"><div class="macro-fill" style="width:32%;background:#4a9e2f"></div></div><span class="macro-val">600 ккал</span></div>
+  </div>
+
+  <div class="sec-label">Порции — запомни раз</div>
+  <div class="portions">
+    <div class="portion"><div class="portion-icon">🥩</div><div class="portion-what">Мясо / рыба</div><div class="portion-how">= ладонь (толщина тоже)</div><div class="portion-g">150–200 г</div></div>
+    <div class="portion"><div class="portion-icon">🍚</div><div class="portion-what">Крупа</div><div class="portion-how">= кулак (сухой!)</div><div class="portion-g">80–100 г</div></div>
+    <div class="portion"><div class="portion-icon">🫒</div><div class="portion-what">Масло</div><div class="portion-how">= 1 ст. ложка</div><div class="portion-g">10 г макс</div></div>
+    <div class="portion"><div class="portion-icon">🥜</div><div class="portion-what">Орехи</div><div class="portion-how">= большой палец</div><div class="portion-g">15 г макс</div></div>
+    <div class="portion"><div class="portion-icon">🥦</div><div class="portion-what">Овощи</div><div class="portion-how">= 2 кулака min</div><div class="portion-g">без лимита</div></div>
+    <div class="portion"><div class="portion-icon">🥛</div><div class="portion-what">Йогурт / кварк</div><div class="portion-how">= 1 упаковка</div><div class="portion-g">200 г</div></div>
+  </div>
+
+  <div class="div"></div>
+  <div class="sec-label">Меню на 7 дней</div>
+  <div class="sub-tabs">
+    <button class="stab on" onclick="ssw('week',this)">По дням</button>
+    <button class="stab" onclick="ssw('mealprep',this)">Готовка</button>
+    <button class="stab" onclick="ssw('banned',this)">Запрещено</button>
+  </div>
+
+  <div id="sub-week" class="sub-pg on">
+    <div class="day-grid">
+      <div class="day-card"><div class="day-name">Пн</div><div class="meal-slot"><b>завтрак</b>Яйца 3 + хлеб + овощи</div><div class="meal-slot"><b>обед</b>Курица 180г + рис 80г + овощи</div><div class="meal-slot"><b>перекус</b>Йогурт 200г</div><div class="meal-slot"><b>ужин</b>Творог 200г + овощи</div></div>
+      <div class="day-card"><div class="day-name">Вт</div><div class="meal-slot"><b>завтрак</b>Овсянка 60г + банан</div><div class="meal-slot"><b>обед</b>Курица 180г + рис 80г</div><div class="meal-slot"><b>перекус</b>Яблоко + орехи 15г</div><div class="meal-slot"><b>ужин</b>Яйца 3 + овощи</div></div>
+      <div class="day-card"><div class="day-name">Ср</div><div class="meal-slot"><b>завтрак</b>Яйца + хлеб</div><div class="meal-slot"><b>обед</b>Курица + рис + овощи</div><div class="meal-slot"><b>перекус</b>Йогурт 200г</div><div class="meal-slot"><b>ужин</b>Рыба 180г + овощи</div></div>
+      <div class="day-card"><div class="day-name">Чт</div><div class="meal-slot"><b>завтрак</b>Овсянка 60г + ягоды</div><div class="meal-slot"><b>обед</b>Рыба 180г + гречка 80г</div><div class="meal-slot"><b>перекус</b>Творог 200г</div><div class="meal-slot"><b>ужин</b>Яйца 2 + овощи</div></div>
+      <div class="day-card"><div class="day-name">Пт</div><div class="meal-slot"><b>завтрак</b>Яйца + хлеб</div><div class="meal-slot"><b>обед</b>Фарш 180г + гречка 80г</div><div class="meal-slot"><b>перекус</b>Яблоко</div><div class="meal-slot"><b>ужин</b>Творог 200г</div></div>
+      <div class="day-card"><div class="day-name">Сб</div><div class="meal-slot"><b>завтрак</b>Овсянка + банан</div><div class="meal-slot"><b>обед</b>Рыба/фарш + гречка</div><div class="meal-slot"><b>перекус</b>Йогурт</div><div class="meal-slot"><b>ужин</b>Яйца / йогурт</div></div>
+      <div class="day-card"><div class="day-name">Вс</div><div class="meal-slot"><b>завтрак</b>Яйца 3</div><div class="meal-slot"><b>обед</b>Курица + рис</div><div class="meal-slot"><b>перекус</b>Фрукт</div><div class="meal-slot"><b>ужин</b>Творог / рыба</div></div>
+    </div>
+  </div>
+
+  <div id="sub-mealprep" class="sub-pg">
+    <div class="box box-green">Готовишь 2 раза. Маленький холодильник — только на 3–4 дня вперёд.</div>
+    <div class="card"><div class="card-title">Суббота</div><div style="font-size:13px;color:var(--text2);line-height:1.6">Куриная грудка 1.2–1.5 кг (запечь или сварить) · Рис 350г сухого · Овощи нарезать · Яйца сварить 6–8 шт</div></div>
+    <div class="card"><div class="card-title">Среда</div><div style="font-size:13px;color:var(--text2);line-height:1.6">Рыба / фарш 800г–1 кг · Гречка 300г сухой · Свежие овощи нарезать</div></div>
+    <div class="box box-blue" style="margin-top:8px">Собираешь тарелку за 3 минуты: достал контейнер + добавил овощи + ложка масла. Готово.</div>
+  </div>
+
+  <div id="sub-banned" class="sub-pg">
+    <div class="box box-red">Убери это полностью — даст −3–5 кг за первый месяц просто от этого шага.</div>
+    <div class="card">
+      <div style="display:flex;flex-wrap:wrap;gap:6px">
+        <span style="background:var(--red-bg);color:var(--red-text);font-size:12px;padding:4px 10px;border-radius:20px">сахар</span>
+        <span style="background:var(--red-bg);color:var(--red-text);font-size:12px;padding:4px 10px;border-radius:20px">выпечка</span>
+        <span style="background:var(--red-bg);color:var(--red-text);font-size:12px;padding:4px 10px;border-radius:20px">сливочное масло</span>
+        <span style="background:var(--red-bg);color:var(--red-text);font-size:12px;padding:4px 10px;border-radius:20px">газировка</span>
+        <span style="background:var(--red-bg);color:var(--red-text);font-size:12px;padding:4px 10px;border-radius:20px">фастфуд</span>
+        <span style="background:var(--red-bg);color:var(--red-text);font-size:12px;padding:4px 10px;border-radius:20px">жареное в масле</span>
+        <span style="background:var(--red-bg);color:var(--red-text);font-size:12px;padding:4px 10px;border-radius:20px">соки в пакетах</span>
+      </div>
+    </div>
+    <div class="box box-green" style="margin-top:4px">Пьёшь: вода 2л/день · кофе без сахара · зелёный чай</div>
+  </div>
+</div>
+
+<!-- TRAINING -->
+<div id="pg-training" class="pg">
+  <div class="box box-blue">Утро — каждый день 8 мин. Вечер — только Пн/Ср/Пт 15–20 мин. Вт/Чт/Сб — растяжка.</div>
+
+  <div class="sec-label">Утро — каждый день до душа</div>
+  <div class="ex-block">
+    <div class="ex-head"><span class="ex-head-title">1 круг, без паузы</span><span class="ex-head-badge">8 мин</span></div>
+    <div class="ex-body">
+      <div class="ex-row"><span class="ex-name">Отжимания (Liegestütze)</span><span class="ex-val">10–15 раз</span></div>
+      <div class="ex-row"><span class="ex-name">Приседания (Kniebeugen)</span><span class="ex-val">15–20 раз</span></div>
+      <div class="ex-row"><span class="ex-name">Планка (Plank)</span><span class="ex-val">30–40 сек</span></div>
+      <div class="ex-row"><span class="ex-name">Альпинист (Mountain Climbers)</span><span class="ex-val">20 раз</span></div>
+      <div class="ex-row"><span class="ex-name">Прыжки (Jumping Jacks)</span><span class="ex-val">30 раз</span></div>
+      <div class="ex-note">Если плохо поспал — делай половину. Но НЕ пропускай. Привычка важнее объёма.</div>
+    </div>
+  </div>
+
+  <div class="sec-label" style="margin-top:1rem">Вечер — прогрессия по неделям (Пн/Ср/Пт)</div>
+  <div class="ex-block">
+    <div class="ex-head"><span class="ex-head-title">Недели 1–2: Адаптация</span><span class="ex-head-badge">2–3 круга</span></div>
+    <div class="ex-body">
+      <div class="ex-row"><span class="ex-name">Отжимания</span><span class="ex-val">10–12 раз</span></div>
+      <div class="ex-row"><span class="ex-name">Приседания</span><span class="ex-val">15 раз</span></div>
+      <div class="ex-row"><span class="ex-name">Планка</span><span class="ex-val">30 сек</span></div>
+      <div class="ex-row"><span class="ex-name">Боковая планка (каждая сторона)</span><span class="ex-val">20 сек</span></div>
+      <div class="ex-note">Отдых между кругами: 60 сек.</div>
+    </div>
+  </div>
+  <div class="ex-block">
+    <div class="ex-head"><span class="ex-head-title">Недели 3–4: Рост</span><span class="ex-head-badge">3 круга</span></div>
+    <div class="ex-body">
+      <div class="ex-row"><span class="ex-name">Отжимания</span><span class="ex-val">15–18 раз</span></div>
+      <div class="ex-row"><span class="ex-name">Приседания</span><span class="ex-val">20 раз</span></div>
+      <div class="ex-row"><span class="ex-name">Планка</span><span class="ex-val">45 сек</span></div>
+      <div class="ex-row"><span class="ex-name">Альпинист</span><span class="ex-val">25 раз</span></div>
+      <div class="ex-note">Отдых: 45 сек.</div>
+    </div>
+  </div>
+  <div class="ex-block">
+    <div class="ex-head"><span class="ex-head-title">Недели 5–6: Усиление</span><span class="ex-head-badge">3–4 круга</span></div>
+    <div class="ex-body">
+      <div class="ex-row"><span class="ex-name">Отжимания</span><span class="ex-val">20+ раз</span></div>
+      <div class="ex-row"><span class="ex-name">Приседания</span><span class="ex-val">25 раз</span></div>
+      <div class="ex-row"><span class="ex-name">Планка</span><span class="ex-val">60 сек</span></div>
+      <div class="ex-row"><span class="ex-name">Прыжки</span><span class="ex-val">50 раз</span></div>
+      <div class="ex-note">Отдых: 30 сек.</div>
+    </div>
+  </div>
+  <div class="ex-block">
+    <div class="ex-head"><span class="ex-head-title">Недели 7–8: Усложнение</span><span class="ex-head-badge">3–4 круга</span></div>
+    <div class="ex-body">
+      <div class="ex-row"><span class="ex-name">Отжимания с паузой внизу 1 сек</span><span class="ex-val">15–20 раз</span></div>
+      <div class="ex-row"><span class="ex-name">Приседания медленно (3 сек вниз)</span><span class="ex-val">20–25 раз</span></div>
+      <div class="ex-row"><span class="ex-name">Планка с подъёмом ноги</span><span class="ex-val">45–60 сек</span></div>
+      <div class="ex-row"><span class="ex-name">Альпинист быстро</span><span class="ex-val">40 раз</span></div>
+      <div class="ex-note">Отдых: 30 сек. Если тяжело — держи уровень ещё неделю.</div>
+    </div>
+  </div>
+  <div class="box box-amber">Увеличиваешь нагрузку только когда сделал ВСЕ круги без "умирания".</div>
+
+  <div class="div"></div>
+  <div class="sec-label">Бег — если добавишь 2 раза в неделю</div>
+
+  <div class="card" style="margin-bottom:10px">
+    <div class="card-title" style="margin-bottom:8px">Что даёт бег 2×2 км в неделю</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div style="background:var(--green-bg);border-radius:var(--radius-sm);padding:10px 12px">
+        <div style="font-size:11px;color:var(--green-text);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px">Калории</div>
+        <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--text)">~400 ккал</div>
+        <div style="font-size:11px;color:var(--text2);margin-top:2px">сжигаешь в неделю дополнительно</div>
+      </div>
+      <div style="background:var(--blue-bg);border-radius:var(--radius-sm);padding:10px 12px">
+        <div style="font-size:11px;color:var(--blue-text);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px">За месяц</div>
+        <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--text)">~0.5 кг</div>
+        <div style="font-size:11px;color:var(--text2);margin-top:2px">дополнительно к питанию</div>
+      </div>
+      <div style="background:var(--amber-bg);border-radius:var(--radius-sm);padding:10px 12px">
+        <div style="font-size:11px;color:var(--amber-text);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px">Энергия</div>
+        <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--text)">++++</div>
+        <div style="font-size:11px;color:var(--text2);margin-top:2px">после 3–4 недель регулярности</div>
+      </div>
+      <div style="background:var(--green-bg);border-radius:var(--radius-sm);padding:10px 12px">
+        <div style="font-size:11px;color:var(--green-text);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px">Сердце</div>
+        <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--text)">↓ЧСС</div>
+        <div style="font-size:11px;color:var(--text2);margin-top:2px">пульс в покое снизится за 4–6 нед</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ex-block">
+    <div class="ex-head"><span class="ex-head-title">Как начинать с нуля — план на 8 недель</span><span class="ex-head-badge">2× в нед.</span></div>
+    <div class="ex-body">
+      <div class="ex-row"><span class="ex-name">Нед. 1–2: Бег/ходьба чередуя</span><span class="ex-val">1 мин бег + 2 мин ходьба × 6</span></div>
+      <div class="ex-row"><span class="ex-name">Нед. 3–4: Увеличиваешь бег</span><span class="ex-val">2 мин бег + 1 мин ходьба × 6</span></div>
+      <div class="ex-row"><span class="ex-name">Нед. 5–6: Непрерывный бег</span><span class="ex-val">15–20 мин без остановки (медленно)</span></div>
+      <div class="ex-row"><span class="ex-name">Нед. 7–8: Дистанция</span><span class="ex-val">2 км спокойно, не торопись</span></div>
+      <div class="ex-note">Темп: можешь говорить предложениями во время бега → правильный темп. Нет — медленнее.</div>
+    </div>
+  </div>
+
+  <div class="ex-block">
+    <div class="ex-head"><span class="ex-head-title">Когда бегать</span><span class="ex-head-badge">под твой график</span></div>
+    <div class="ex-body">
+      <div class="ex-row"><span class="ex-name">Лучший вариант</span><span class="ex-val">Сб/Вс утром с дочкой на коляске</span></div>
+      <div class="ex-row"><span class="ex-name">Будни</span><span class="ex-val">После 20:00 если ребёнок уснул</span></div>
+      <div class="ex-row"><span class="ex-name">НЕ бегай</span><span class="ex-val">Сразу после еды — минимум 1.5 часа</span></div>
+      <div class="ex-note">2 км при твоём весе займут ~18–22 минуты. Не быстро — это нормально.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="margin-bottom:8px">Плюсы именно для тебя</div>
+    <div style="font-size:13px;color:var(--text2);line-height:1.8">
+      ✓ Снижает усталость от сидячей работы — через 2–3 недели заметишь<br>
+      ✓ Антистресс — важно когда жена беременна и нагрузка большая<br>
+      ✓ Ускоряет метаболизм на 4–6 часов после пробежки<br>
+      ✓ Улучшает сон — засыпать станет легче<br>
+      ✓ Уходит живот быстрее — бег сжигает висцеральный жир
+    </div>
+  </div>
+
+  <div class="box box-amber" style="margin-top:4px">Не начинай с 2 км сразу если давно не бегал — суставы не готовы. Первые 2 недели — бег/ходьба чередуя. Это не слабость, это правильно.</div>
+</div>
+
+<!-- SUPPS -->
+<div id="pg-supps" class="pg">
+  <div class="sec-label">Только то что у тебя есть</div>
+  <div class="card">
+    <div class="supp-item">
+      <div class="sdot" style="background:var(--green)"></div>
+      <div>
+        <div class="sname">Креатин — Gym Nutrition Extrapure</div>
+        <div class="sdesc">5г каждый день утром с завтраком №2 (~09:00). Эффект через 2 недели — сила и выносливость, не энергия сразу. Важна регулярность, не время.</div>
+        <span class="stag stag-g">оставить — утром</span>
+      </div>
+    </div>
+    <div class="supp-item">
+      <div class="sdot" style="background:var(--green)"></div>
+      <div>
+        <div class="sname">Calcium + Magnesium + Zinc + D3 — WeightWorld</div>
+        <div class="sdesc">Вечером после ужина (~21:30). Магний улучшает сон и восстановление. D3 важен в Германии — мало солнца. Продолжай как есть.</div>
+        <span class="stag stag-g">оставить — вечером</span>
+      </div>
+    </div>
+    <div class="supp-item">
+      <div class="sdot" style="background:var(--amber)"></div>
+      <div>
+        <div class="sname">Омега-3 — по желанию</div>
+        <div class="sdesc">Если ешь рыбу 3+ раза в неделю — не нужно. Если меньше — дешёвый рыбий жир в аптеке (~3–5€).</div>
+        <span class="stag stag-a">необязательно</span>
+      </div>
+    </div>
+  </div>
+  <div class="box box-red">Аргинин и хлорофилл из Instagram — маркетинг. Не трать деньги.</div>
+</div>
+
+<!-- SHOP -->
+<div id="pg-shop" class="pg">
+  <div class="box box-green">Закупка в Penny — на 3–4 дня. Нажимай чтобы отметить купленное.</div>
+  <div id="shoplist">
+    <div class="shop-group">
+      <div class="shop-group-title">Белок</div>
+      <div class="shop-item" onclick="ts(this)" data-p="8.50"><div class="sbox"></div><div class="shop-info"><div class="shop-ru">Куриная грудка — 1.5 кг</div><div class="shop-de">Hähnchenbrust Filet (frisch oder TK) — ca. 500–600g Packung</div></div><span class="shop-price">~8.50 €</span></div>
+      <div class="shop-item" onclick="ts(this)" data-p="6.00"><div class="sbox"></div><div class="shop-info"><div class="shop-ru">Рыба / минтай заморож. — 800г</div><div class="shop-de">Seelachs Filet tiefgekühlt — Packung 400–500g</div></div><span class="shop-price">~6.00 €</span></div>
+      <div class="shop-item" onclick="ts(this)" data-p="3.30"><div class="sbox"></div><div class="shop-info"><div class="shop-ru">Яйца — 20 шт</div><div class="shop-de">Eier M/L Bodenhaltung — 10er Pack × 2</div></div><span class="shop-price">~3.30 €</span></div>
+      <div class="shop-item" onclick="ts(this)" data-p="2.00"><div class="sbox"></div><div class="shop-info"><div class="shop-ru">Греческий йогурт без сахара — 500г</div><div class="shop-de">Griechischer Joghurt 0% Fett — 500g Becher</div></div><span class="shop-price">~2.00 €</span></div>
+      <div class="shop-item" onclick="ts(this)" data-p="1.00"><div class="sbox"></div><div class="shop-info"><div class="shop-ru">Творог / кварк — 500г</div><div class="shop-de">Magerquark (Speisequark Magerstufe) — 500g Becher</div></div><span class="shop-price">~1.00 €</span></div>
+    </div>
+    <div class="shop-group">
+      <div class="shop-group-title">Углеводы</div>
+      <div class="shop-item" onclick="ts(this)" data-p="1.30"><div class="sbox"></div><div class="shop-info"><div class="shop-ru">Овсянка — 500г</div><div class="shop-de">Haferflocken (zart oder kernig) — 500g Tüte</div></div><span class="shop-price">~1.30 €</span></div>
+      <div class="shop-item" onclick="ts(this)" data-p="1.50"><div class="sbox"></div><div class="shop-info"><div class="shop-ru">Гречка — 500г</div><div class="shop-de">Buchweizen — 500g Packung (Regal Bio/Naturkost)</div></div><span class="shop-price">~1.50 €</span></div>
+      <div class="shop-item" onclick="ts(this)" data-p="1.40"><div class="sbox"></div><div class="shop-info"><div class="shop-ru">Рис — 500г</div><div class="shop-de">Naturreis / Langkornreis — 500g Packung</div></div><span class="shop-price">~1.40 €</span></div>
+      <div class="shop-item" onclick="ts(this)" data-p="2.00"><div class="sbox"></div><div class="shop-info"><div class="shop-ru">Цельнозерновой хлеб</div><div class="shop-de">Vollkornbrot — 1 Laib (~500g)</div></div><span class="shop-price">~2.00 €</span></div>
+    </div>
+    <div class="shop-group">
+      <div class="shop-group-title">Овощи и фрукты</div>
+      <div class="shop-item" onclick="ts(this)" data-p="1.50"><div class="sbox"></div><div class="shop-info"><div class="shop-ru">Брокколи — 500г</div><div class="shop-de">Brokkoli (frisch oder TK) — 500g</div></div><span class="shop-price">~1.50 €</span></div>
+      <div class="shop-item" onclick="ts(this)" data-p="1.30"><div class="sbox"></div><div class="shop-info"><div class="shop-ru">Огурцы — 3 шт</div><div class="shop-de">Salatgurke — Stück oder im Netz</div></div><span class="shop-price">~1.30 €</span></div>
+      <div class="shop-item" onclick="ts(this)" data-p="2.00"><div class="sbox"></div><div class="shop-info"><div class="shop-ru">Помидоры — 1 кг</div><div class="shop-de">Tomaten — 1 kg Netz oder lose</div></div><span class="shop-price">~2.00 €</span></div>
+      <div class="shop-item" onclick="ts(this)" data-p="1.60"><div class="sbox"></div><div class="shop-info"><div class="shop-ru">Перец — 3 шт</div><div class="shop-de">Paprika (rot/gelb/grün) — Stück oder Netz</div></div><span class="shop-price">~1.60 €</span></div>
+      <div class="shop-item" onclick="ts(this)" data-p="1.80"><div class="sbox"></div><div class="shop-info"><div class="shop-ru">Яблоки — 1 кг</div><div class="shop-de">Äpfel — 1 kg Netz</div></div><span class="shop-price">~1.80 €</span></div>
+      <div class="shop-item" onclick="ts(this)" data-p="1.50"><div class="sbox"></div><div class="shop-info"><div class="shop-ru">Бананы — 5 шт</div><div class="shop-de">Bananen — lose, nach Gewicht (~1 kg)</div></div><span class="shop-price">~1.50 €</span></div>
+      <div class="shop-item" onclick="ts(this)" data-p="2.00"><div class="sbox"></div><div class="shop-info"><div class="shop-ru">Ягоды заморож. — 500г</div><div class="shop-de">Gemischte Beeren tiefgekühlt — 500g Beutel</div></div><span class="shop-price">~2.00 €</span></div>
+    </div>
+    <div class="shop-group">
+      <div class="shop-group-title">Жиры</div>
+      <div class="shop-item" onclick="ts(this)" data-p="4.00"><div class="sbox"></div><div class="shop-info"><div class="shop-ru">Оливковое масло — 0.75 л</div><div class="shop-de">Olivenöl nativ extra — 0,75 Liter Flasche</div></div><span class="shop-price">~4.00 €</span></div>
+      <div class="shop-item" onclick="ts(this)" data-p="2.50"><div class="sbox"></div><div class="shop-info"><div class="shop-ru">Орехи (миндаль / грецкий) — 200г</div><div class="shop-de">Mandeln / Walnüsse (ungesalzen) — 200g Beutel</div></div><span class="shop-price">~2.50 €</span></div>
+    </div>
+  </div>
+  <div class="total-bar">
+    <span class="total-lbl">Примерная сумма:</span>
+    <span class="total-val" id="total-val">~50 €</span>
+  </div>
+  <div class="box box-amber" style="margin-top:8px">Не клади в корзину сладкое, выпечку, газировку. Если не купишь — не съешь. Это работает на 100%.</div>
+</div>
+
+<!-- DAILY -->
+<div id="pg-daily" class="pg">
+  <div class="sec-label">Ежедневный чеклист</div>
+  <div class="box box-amber">Сбрасывается при закрытии. Для постоянного трекера → вкладка «Трекер».</div>
+  <div class="card">
+    <div class="ci" onclick="tc(this)"><div class="ci-box"></div><span class="ci-text">Утренний комплекс (8 мин до душа)</span></div>
+    <div class="ci" onclick="tc(this)"><div class="ci-box"></div><span class="ci-text">Завтрак №1 до 07:00</span></div>
+    <div class="ci" onclick="tc(this)"><div class="ci-box"></div><span class="ci-text">Завтрак №2 + креатин 5г</span></div>
+    <div class="ci" onclick="tc(this)"><div class="ci-box"></div><span class="ci-text">Обед — белок + крупа + овощи</span></div>
+    <div class="ci" onclick="tc(this)"><div class="ci-box"></div><span class="ci-text">Движение днём (10 мин)</span></div>
+    <div class="ci" onclick="tc(this)"><div class="ci-box"></div><span class="ci-text">Перекус — йогурт ИЛИ фрукт (не вместе с орехами)</span></div>
+    <div class="ci" onclick="tc(this)"><div class="ci-box"></div><span class="ci-text">Ужин — белок + овощи, без круп</span></div>
+    <div class="ci" onclick="tc(this)"><div class="ci-box"></div><span class="ci-text">Вечерняя тренировка / растяжка</span></div>
+    <div class="ci" onclick="tc(this)"><div class="ci-box"></div><span class="ci-text">Calcium + Magnesium + Zinc после ужина</span></div>
+    <div class="ci" onclick="tc(this)"><div class="ci-box"></div><span class="ci-text">Вода 2 литра за день</span></div>
+    <div class="ci" onclick="tc(this)"><div class="ci-box"></div><span class="ci-text">Без сахара, газировки, выпечки</span></div>
+    <div class="ci" onclick="tc(this)"><div class="ci-box"></div><span class="ci-text">Сон до 23:30</span></div>
+  </div>
+
+  <div class="div"></div>
+  <div class="sec-label">Каждую неделю</div>
+  <div class="card">
+    <div class="ci" onclick="tc(this)"><div class="ci-box"></div><span class="ci-text">Взвешивание (1 раз — утром натощак)</span></div>
+    <div class="ci" onclick="tc(this)"><div class="ci-box"></div><span class="ci-text">Суббота — meal prep (курица + крупа + овощи)</span></div>
+    <div class="ci" onclick="tc(this)"><div class="ci-box"></div><span class="ci-text">Среда — второй meal prep (рыба/фарш + гречка)</span></div>
+    <div class="ci" onclick="tc(this)"><div class="ci-box"></div><span class="ci-text">Закупка в Penny (не покупать мусор!)</span></div>
+  </div>
+
+  <div class="div"></div>
+  <div class="big-rule" style="border-left-color:var(--red)">
+    <div class="big-rule-title">Если сорвался — читай это</div>
+    <div class="big-rule-sub">Один плохой день ≠ провал. Съел лишнее? Следующий приём пищи — по плану. Не пытайся "компенсировать" голоданием. Просто продолжай.</div>
+  </div>
+</div>
+
+<!-- TRACKER -->
+<div id="pg-tracker" class="pg">
+  <div class="sec-label">Трекер веса</div>
+  <div class="box box-blue">Данные сохраняются в браузере на этом устройстве.</div>
+  <div class="weight-input-row">
+    <input type="number" class="weight-input" id="w-input" placeholder="96.5" step="0.1">
+    <button class="weight-btn" onclick="addWeight()">Записать</button>
+  </div>
+  <div id="w-history" class="weight-history"></div>
+
+  <div class="div"></div>
+  <div class="sec-label">Прогресс по неделям</div>
+  <div class="week-tracker" id="week-tracker">
+  </div>
+  <button class="reset-btn" onclick="resetWeeks()">Сбросить прогресс недель</button>
+</div>
+
+</main>
+
+<script>
+// THEME
+function toggleTheme() {
+  const isLight = document.body.classList.toggle('light');
+  const btn = document.getElementById('theme-btn');
+  btn.textContent = isLight ? '🌙 Тёмная' : '☀️ Светлая';
+  localStorage.setItem('serdar_theme', isLight ? 'light' : 'dark');
+}
+
+// Init theme
+(function() {
+  const saved = localStorage.getItem('serdar_theme');
+  if (saved === 'light') {
+    document.body.classList.add('light');
+    const btn = document.getElementById('theme-btn');
+    if (btn) btn.textContent = '🌙 Тёмная';
+  }
+})();
+
+// NAV
+function sw(id, btn) {
+  document.querySelectorAll('.pg').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.nbtn').forEach(b => b.classList.remove('on'));
+  document.getElementById('pg-' + id).classList.add('on');
+  btn.classList.add('on');
+  window.scrollTo(0, 0);
+}
+
+// SUB TABS
+function ssw(id, btn) {
+  const pg = btn.closest('.pg');
+  pg.querySelectorAll('.sub-pg').forEach(p => p.classList.remove('on'));
+  pg.querySelectorAll('.stab').forEach(b => b.classList.remove('on'));
+  document.getElementById('sub-' + id).classList.add('on');
+  btn.classList.add('on');
+}
+
+// CHECKLIST
+function tc(el) {
+  el.classList.toggle('done');
+  el.querySelector('.ci-box').classList.toggle('done');
+}
+
+// SHOP
+function ts(el) {
+  el.classList.toggle('done');
+  el.querySelector('.sbox').classList.toggle('done');
+  updateTotal();
+}
+
+function updateTotal() {
+  let total = 0;
+  document.querySelectorAll('#shoplist .shop-item').forEach(item => {
+    if (!item.classList.contains('done')) {
+      total += parseFloat(item.dataset.p || 0);
+    }
+  });
+  document.getElementById('total-val').textContent = '~' + Math.round(total) + ' €';
+}
+updateTotal();
+
+// WEIGHT TRACKER
+function addWeight() {
+  const val = parseFloat(document.getElementById('w-input').value);
+  if (isNaN(val) || val < 30 || val > 300) return;
+  const history = JSON.parse(localStorage.getItem('serdar_weight') || '[]');
+  const today = new Date().toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' });
+  history.push({ date: today, val: val });
+  localStorage.setItem('serdar_weight', JSON.stringify(history));
+  document.getElementById('w-input').value = '';
+  renderWeightHistory();
+}
+
+function renderWeightHistory() {
+  const history = JSON.parse(localStorage.getItem('serdar_weight') || '[]');
+  const el = document.getElementById('w-history');
+  if (history.length === 0) {
+    el.innerHTML = '<span style="color:var(--text3);font-size:13px">Нет записей</span>';
+    return;
+  }
+  const start = 96.5;
+  const last = history[history.length - 1].val;
+  const diff = (last - start).toFixed(1);
+  const color = diff <= 0 ? 'var(--green-text)' : 'var(--red-text)';
+  el.innerHTML = history.slice(-10).reverse().map(e =>
+    `<span class="weight-entry">${e.date} — ${e.val} кг</span>`
+  ).join('') +
+  `<div style="margin-top:10px;font-size:13px;color:var(--text2)">Старт: <b style="color:var(--text)">96.5 кг</b> → Сейчас: <b style="color:var(--text)">${last} кг</b> → Изменение: <b style="color:${color}">${diff > 0 ? '+' : ''}${diff} кг</b></div>`;
+}
+
+// WEEK TRACKER
+function renderWeeks() {
+  const done = JSON.parse(localStorage.getItem('serdar_weeks') || '[]');
+  const container = document.getElementById('week-tracker');
+  container.innerHTML = '';
+  for (let i = 1; i <= 16; i++) {
+    const card = document.createElement('div');
+    card.className = 'wk-card' + (done.includes(i) ? ' done' : '');
+    card.innerHTML = `<div class="wk-num">${i}</div><div class="wk-label">неделя</div>`;
+    card.onclick = () => toggleWeek(i);
+    container.appendChild(card);
+  }
+}
+
+function toggleWeek(n) {
+  let done = JSON.parse(localStorage.getItem('serdar_weeks') || '[]');
+  if (done.includes(n)) {
+    done = done.filter(x => x !== n);
+  } else {
+    done.push(n);
+  }
+  localStorage.setItem('serdar_weeks', JSON.stringify(done));
+  renderWeeks();
+}
+
+function resetWeeks() {
+  if (confirm('Сбросить прогресс недель?')) {
+    localStorage.removeItem('serdar_weeks');
+    renderWeeks();
+  }
+}
+
+renderWeightHistory();
+renderWeeks();
+</script>
+</body>
+</html>
