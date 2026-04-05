@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LifeReset</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f0f0f;--bg2:#181818;--bg3:#222222;
+  --border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.14);
+  --text:#f0ede8;--text2:#9a9690;--text3:#5a5755;
+  --green:#4a9e2f;--green-bg:rgba(74,158,47,0.12);--green-text:#7dcb5a;
+  --amber:#c47f1a;--amber-bg:rgba(196,127,26,0.12);--amber-text:#e8a84a;
+  --blue:#2a7fd4;--blue-bg:rgba(42,127,212,0.12);--blue-text:#5aaff0;
+  --red:#c43a3a;--red-bg:rgba(196,58,58,0.12);--red-text:#f07070;
+  --radius:12px;--radius-sm:8px;
+}
+html.light{
+  --bg:#f4f2ee;--bg2:#ffffff;--bg3:#edeae5;
+  --border:rgba(0,0,0,0.08);--border2:rgba(0,0,0,0.14);
+  --text:#1a1a18;--text2:#6b6760;--text3:#aaa89f;
+  --green:#2d7a18;--green-bg:rgba(45,122,24,0.1);--green-text:#1e5e10;
+  --amber:#a05a00;--amber-bg:rgba(160,90,0,0.1);--amber-text:#7a4400;
+  --blue:#1455a8;--blue-bg:rgba(20,85,168,0.1);--blue-text:#0f4080;
+  --red:#a02020;--red-bg:rgba(160,32,32,0.1);--red-text:#781818;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.6;min-height:100vh;transition:background 0.2s,color 0.2s}
+h1,h2,h3{font-family:'Syne',sans-serif}
+
+/* HEADER */
+.header{background:var(–bg2);border-bottom:1px solid var(–border);padding:1.2rem 1.25rem 0.8rem;position:sticky;top:0;z-index:100;transition:background 0.2s}
+.header-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.75rem;gap:8px}
+.header-title{font-size:22px;font-weight:800;color:var(–text);line-height:1.1;font-family:‘Syne’,sans-serif}
+.header-sub{font-size:12px;color:var(–text2);margin-top:3px}
+.stats-row{display:flex;gap:4px;flex-wrap:wrap}
+.stat-pill{background:var(–bg3);border:1px solid var(–border);border-radius:20px;padding:4px 10px;font-size:12px;color:var(–text2)}
+.stat-pill span{color:var(–text);font-weight:500}
+.theme-btn{background:var(–bg3);border:1px solid var(–border2);border-radius:20px;padding:5px 12px;color:var(–text2);font-size:12px;font-family:‘DM Sans’,sans-serif;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all 0.2s}
+.theme-btn:active{opacity:0.7}
+
+/* NAV */
+.nav{background:var(–bg2);border-bottom:1px solid var(–border);padding:0 1.25rem;display:flex;overflow-x:auto;scrollbar-width:none;transition:background 0.2s}
+.nav::-webkit-scrollbar{display:none}
+.nbtn{padding:11px 14px;border:none;background:transparent;color:var(–text3);font-family:‘DM Sans’,sans-serif;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:color 0.15s}
+.nbtn.on{color:var(–text);border-bottom-color:var(–green)}
+
+/* MAIN */
+.main{max-width:700px;margin:0 auto;padding:1.5rem 1.25rem 100px}
+.pg{display:none}.pg.on{display:block}
+.sec-label{font-size:10px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(–text3);margin-bottom:12px}
+.card{background:var(–bg2);border:1px solid var(–border);border-radius:var(–radius);padding:1rem 1.25rem;margin-bottom:10px}
+.card-title{font-size:14px;font-weight:500;color:var(–text);margin-bottom:6px}
+.box{border-radius:var(–radius-sm);padding:10px 14px;font-size:13px;margin-bottom:10px;line-height:1.55}
+.box-green{background:var(–green-bg);color:var(–green-text);border-left:2px solid var(–green)}
+.box-amber{background:var(–amber-bg);color:var(–amber-text);border-left:2px solid var(–amber)}
+.box-blue{background:var(–blue-bg);color:var(–blue-text);border-left:2px solid var(–blue)}
+.box-red{background:var(–red-bg);color:var(–red-text);border-left:2px solid var(–red)}
+.div{height:1px;background:var(–border);margin:1.25rem 0}
+
+/* STATS */
+.hero-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:1rem}
+@media(max-width:420px){.hero-stats{grid-template-columns:repeat(2,1fr)}}
+.hstat{background:var(–bg2);border:1px solid var(–border);border-radius:var(–radius-sm);padding:10px 12px;text-align:center}
+.hstat-val{font-family:‘Syne’,sans-serif;font-size:20px;font-weight:700;color:var(–text)}
+.hstat-lbl{font-size:11px;color:var(–text3);margin-top:2px}
+
+/* PHASES */
+.phases{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:1.25rem}
+@media(min-width:500px){.phases{grid-template-columns:repeat(4,1fr)}}
+.phase{background:var(–bg2);border:1px solid var(–border);border-radius:var(–radius-sm);padding:10px 12px}
+.phase-wk{font-size:10px;color:var(–text3);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.5px}
+.phase-kg{font-family:‘Syne’,sans-serif;font-size:18px;font-weight:700;color:var(–text)}
+.phase-desc{font-size:11px;color:var(–text2);margin-top:3px;line-height:1.4}
+.phase-bar{height:2px;border-radius:2px;margin-top:8px}
+
+/* RULES */
+.big-rule{background:var(–bg2);border:1px solid var(–border);border-left:3px solid var(–blue);border-radius:0 var(–radius-sm) var(–radius-sm) 0;padding:12px 14px;margin-bottom:8px}
+.big-rule-title{font-family:‘Syne’,sans-serif;font-size:14px;font-weight:700;color:var(–text);margin-bottom:3px}
+.big-rule-sub{font-size:12px;color:var(–text2);line-height:1.5}
+
+/* WEATHER */
+.weather-card{background:var(–bg2);border:1px solid var(–border);border-radius:var(–radius);padding:14px 16px;margin-bottom:12px}
+.weather-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px}
+.weather-city{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(–text3);margin-bottom:6px}
+.weather-temp{font-family:‘Syne’,sans-serif;font-size:30px;font-weight:800;color:var(–text);line-height:1}
+.weather-desc{font-size:13px;color:var(–text2);margin-top:4px}
+.weather-right{text-align:right}
+.weather-detail-row{font-size:12px;color:var(–text2);margin-bottom:3px}
+.weather-forecast{display:flex;gap:8px;margin-top:12px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.weather-forecast::-webkit-scrollbar{display:none}
+.wf-slot{background:var(–bg3);border-radius:var(–radius-sm);padding:8px 10px;text-align:center;flex-shrink:0;min-width:56px}
+.wf-time{font-size:10px;color:var(–text3);margin-bottom:3px}
+.wf-icon{font-size:16px;margin-bottom:3px}
+.wf-temp{font-size:13px;font-weight:500;color:var(–text)}
+.uv-bar{margin-top:10px;display:flex;align-items:center;gap:8px}
+.uv-label{font-size:11px;color:var(–text3);white-space:nowrap}
+.uv-track{flex:1;height:6px;border-radius:3px;background:linear-gradient(to right,#4a9e2f,#c47f1a,#c43a3a)}
+.uv-pointer{width:10px;height:10px;border-radius:50%;background:white;border:2px solid var(–bg);box-shadow:0 0 0 1px rgba(0,0,0,0.3);position:relative;top:-2px;margin-left:var(–uv-pos,0%);transition:margin-left 0.5s}
+.uv-val{font-size:12px;font-weight:500;color:var(–text);white-space:nowrap}
+
+/* TIMELINE */
+.tl{padding-left:20px;position:relative}
+.tl::before{content:’’;position:absolute;left:5px;top:0;bottom:0;width:1px;background:var(–border)}
+.tl-item{position:relative;margin-bottom:12px}
+.tl-dot{position:absolute;left:-18px;top:5px;width:8px;height:8px;border-radius:50%;border:1.5px solid var(–border2);background:var(–bg)}
+.tl-dot.g{border-color:var(–green);background:var(–green-bg)}
+.tl-dot.b{border-color:var(–blue);background:var(–blue-bg)}
+.tl-dot.a{border-color:var(–amber);background:var(–amber-bg)}
+.tl-dot.r{border-color:var(–red);background:var(–red-bg)}
+.tl-time{font-size:11px;font-weight:500;color:var(–text3);margin-bottom:1px}
+.tl-title{font-size:13px;font-weight:500;color:var(–text)}
+.tl-sub{font-size:12px;color:var(–text2);margin-top:2px;line-height:1.4}
+
+/* CHIPS */
+.food-chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.chip{background:var(–bg3);border:1px solid var(–border2);border-radius:20px;padding:3px 10px;font-size:11px;color:var(–text2);cursor:pointer;transition:all 0.15s;-webkit-tap-highlight-color:transparent}
+.chip:active{opacity:0.7}
+.chip.has-recipe{border-style:dashed}
+.chip-map{background:var(–blue-bg);border:1px solid var(–blue);color:var(–blue-text)}
+
+/* DAY TABS */
+.day-tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px;margin-bottom:1rem}
+.day-tabs::-webkit-scrollbar{display:none}
+.dtab{padding:6px 12px;border-radius:var(–radius-sm);border:1px solid var(–border);font-size:12px;cursor:pointer;background:transparent;color:var(–text2);font-family:‘DM Sans’,sans-serif;white-space:nowrap;transition:all 0.15s}
+.dtab.on{background:var(–bg3);color:var(–text);border-color:var(–border2);font-weight:500}
+.day-pg{display:none}.day-pg.on{display:block}
+
+/* MACROS */
+.macro-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.macro-label{font-size:12px;color:var(–text2);min-width:95px}
+.macro-track{flex:1;height:6px;background:var(–bg3);border-radius:3px;overflow:hidden}
+.macro-fill{height:100%;border-radius:3px}
+.macro-val{font-size:12px;font-weight:500;color:var(–text);min-width:55px;text-align:right}
+
+/* PORTIONS */
+.portions{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:1rem}
+@media(min-width:500px){.portions{grid-template-columns:repeat(3,1fr)}}
+.portion{background:var(–bg2);border:1px solid var(–border);border-radius:var(–radius-sm);padding:12px}
+.portion-icon{font-size:20px;margin-bottom:6px}
+.portion-what{font-size:13px;font-weight:500;color:var(–text)}
+.portion-how{font-size:11px;color:var(–text2);margin-top:2px}
+.portion-g{font-family:‘Syne’,sans-serif;font-size:16px;font-weight:700;color:var(–text);margin-top:4px}
+
+/* EXERCISES */
+.ex-block{background:var(–bg2);border:1px solid var(–border);border-radius:var(–radius);overflow:hidden;margin-bottom:10px}
+.ex-head{background:var(–bg3);padding:10px 14px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(–border)}
+.ex-head-title{font-size:13px;font-weight:500;color:var(–text)}
+.ex-head-badge{font-size:11px;color:var(–blue-text);background:var(–blue-bg);padding:2px 8px;border-radius:20px}
+.ex-body{padding:10px 14px}
+.ex-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(–border);font-size:13px}
+.ex-row:last-child{border:none}
+.ex-name{color:var(–text2)}
+.ex-val{font-weight:500;color:var(–text)}
+.ex-note{font-size:11px;color:var(–text3);margin-top:4px;font-style:italic}
+
+/* SHOP */
+.shop-group{margin-bottom:1.25rem}
+.shop-group-title{font-size:10px;font-weight:500;color:var(–text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.shop-item{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(–border);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.shop-item:last-child{border:none}
+.shop-item.done{opacity:0.4}
+.shop-emoji{width:40px;height:40px;background:var(–bg3);border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px}
+.shop-img{width:40px;height:40px;border-radius:6px;object-fit:cover;flex-shrink:0}
+.sbox{width:16px;height:16px;border:1.5px solid var(–border2);border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.15s}
+.sbox.done{background:var(–green);border-color:var(–green)}
+.sbox.done::after{content:“✓”;color:white;font-size:10px;font-weight:700}
+.shop-info{flex:1;min-width:0}
+.shop-ru{font-size:13px;color:var(–text);line-height:1.3}
+.shop-de{font-size:11px;color:var(–blue-text);margin-top:2px}
+.shop-price{font-size:12px;font-weight:500;color:var(–text2);white-space:nowrap}
+.total-bar{display:flex;justify-content:space-between;align-items:center;padding:12px 0 4px;border-top:1px solid var(–border2);margin-top:4px}
+.total-lbl{font-size:13px;color:var(–text2)}
+.total-val{font-family:‘Syne’,sans-serif;font-size:18px;font-weight:700;color:var(–text)}
+
+/* SUPPS */
+.supp-item{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(–border);align-items:flex-start}
+.supp-item:last-child{border:none}
+.sdot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.sname{font-size:13px;font-weight:500;color:var(–text);margin-bottom:3px}
+.sdesc{font-size:12px;color:var(–text2);line-height:1.5}
+.stag{display:inline-block;font-size:10px;padding:2px 8px;border-radius:10px;margin-top:5px}
+.stag-g{background:var(–green-bg);color:var(–green-text)}
+.stag-a{background:var(–amber-bg);color:var(–amber-text)}
+
+/* DAILY */
+.ci{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(–border);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.ci:last-child{border:none}
+.ci.done .ci-text{color:var(–text3);text-decoration:line-through}
+.ci-box{width:16px;height:16px;border-radius:4px;border:1.5px solid var(–border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.15s}
+.ci-box.done{background:var(–green);border-color:var(–green)}
+.ci-box.done::after{content:“✓”;color:white;font-size:10px;font-weight:700}
+.ci-text{font-size:13px;color:var(–text)}
+
+/* TRACKER */
+.week-tracker{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:1rem}
+@media(max-width:400px){.week-tracker{grid-template-columns:repeat(2,1fr)}}
+.wk-card{background:var(–bg2);border:1px solid var(–border);border-radius:var(–radius-sm);padding:10px 12px;text-align:center;cursor:pointer;transition:all 0.15s;-webkit-tap-highlight-color:transparent}
+.wk-card.done{border-color:var(–green);background:var(–green-bg)}
+.wk-num{font-family:‘Syne’,sans-serif;font-size:16px;font-weight:700;color:var(–text3)}
+.wk-card.done .wk-num{color:var(–green-text)}
+.wk-label{font-size:10px;color:var(–text3);margin-top:2px}
+.wk-card.done .wk-label{color:var(–green-text)}
+.w-row{display:flex;gap:8px;align-items:center;margin-bottom:1rem;flex-wrap:wrap}
+.w-inp{background:var(–bg2);border:1px solid var(–border2);border-radius:var(–radius-sm);padding:8px 12px;color:var(–text);font-size:15px;font-family:‘DM Sans’,sans-serif;width:100px;outline:none}
+.w-inp:focus{border-color:var(–green)}
+.w-btn{background:var(–green);border:none;border-radius:var(–radius-sm);padding:8px 16px;color:white;font-size:13px;font-weight:500;cursor:pointer;font-family:‘DM Sans’,sans-serif}
+.w-entry{display:inline-flex;align-items:center;gap:5px;background:var(–bg3);border:1px solid var(–border);border-radius:20px;padding:4px 10px;font-size:12px;margin:3px 3px 3px 0;color:var(–text)}
+.w-edit-btn{background:none;border:none;color:var(–blue-text);cursor:pointer;font-size:11px;padding:0;font-family:‘DM Sans’,sans-serif;text-decoration:underline}
+.w-del-btn{background:none;border:none;color:var(–red-text);cursor:pointer;font-size:14px;padding:0;line-height:1}
+.w-hist{margin-bottom:8px;line-height:1.8}
+.reset-btn{background:transparent;border:1px solid var(–border2);border-radius:var(–radius-sm);padding:6px 12px;color:var(–text3);font-size:12px;cursor:pointer;font-family:‘DM Sans’,sans-serif}
+
+/* MODAL */
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:200;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.2s}
+.modal-ov.open{opacity:1;pointer-events:all}
+.modal{background:var(–bg2);border-radius:var(–radius) var(–radius) 0 0;padding:1.5rem 1.25rem 2.5rem;width:100%;max-width:700px;max-height:88vh;overflow-y:auto;transform:translateY(20px);transition:transform 0.2s,background 0.2s}
+.modal-ov.open .modal{transform:translateY(0)}
+.modal-close{float:right;background:var(–bg3);border:none;border-radius:50%;width:30px;height:30px;color:var(–text2);cursor:pointer;font-size:16px;line-height:30px;text-align:center;margin-top:-4px}
+.modal-title{font-family:‘Syne’,sans-serif;font-size:18px;font-weight:700;color:var(–text);margin-bottom:3px;clear:none}
+.modal-sub{font-size:12px;color:var(–text2);margin-bottom:1rem}
+.r-step{display:flex;gap:12px;margin-bottom:14px;align-items:flex-start}
+.step-n{font-family:‘Syne’,sans-serif;font-size:18px;font-weight:800;color:var(–green);min-width:26px;flex-shrink:0;line-height:1.2}
+.step-x{font-size:13px;color:var(–text);line-height:1.6}
+.step-x b{color:var(–amber-text)}
+.step-img{width:100%;max-height:200px;border-radius:8px;margin-top:6px;display:block;object-fit:cover}
+.r-tip{background:var(–amber-bg);border-radius:var(–radius-sm);padding:10px 14px;font-size:12px;color:var(–amber-text);margin-top:8px;line-height:1.5}
+.r-store{background:var(–blue-bg);border-radius:var(–radius-sm);padding:10px 14px;font-size:12px;color:var(–blue-text);margin-top:8px;line-height:1.5}
+
+/* TOAST */
+.toast{position:fixed;bottom:76px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:8px 18px;border-radius:20px;font-size:13px;z-index:999;pointer-events:none;opacity:0;transition:opacity 0.3s;white-space:nowrap}
+.toast.show{opacity:1}
+
+/* BOTTOM PANEL */
+.bp{position:fixed;bottom:0;left:0;right:0;z-index:90;background:var(–bg2);border-top:1px solid var(–border);transition:background 0.2s}
+.bp-toggle{display:flex;align-items:center;gap:8px;padding:10px 16px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.bp-icon{font-size:14px;flex-shrink:0}
+.bp-text{flex:1;font-size:12px;color:var(–text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bp-arr{font-size:10px;color:var(–text3);transition:transform 0.25s;flex-shrink:0}
+.bp-arr.open{transform:rotate(180deg)}
+.bp-body{overflow:hidden;max-height:0;transition:max-height 0.3s ease}
+.bp-body.open{max-height:360px;overflow-y:auto}
+.bp-inner{padding:4px 16px 24px}
+.bp-quote{font-size:14px;color:var(–text);line-height:1.5;margin-bottom:8px;font-style:italic}
+.bp-day{font-size:11px;color:var(–text3);margin-bottom:14px}
+.bp-sec{font-size:10px;color:var(–text3);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;margin-top:12px}
+.city-list{display:flex;flex-direction:column;gap:0}
+.city-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(–border);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.city-item:last-child{border:none}
+.city-name{flex:1;font-size:13px;color:var(–text)}
+.city-del{background:none;border:none;color:var(–red-text);cursor:pointer;font-size:16px;padding:0 4px;line-height:1}
+.city-active{width:8px;height:8px;border-radius:50%;background:var(–green);flex-shrink:0}
+.city-inactive{width:8px;height:8px;border-radius:50%;border:1.5px solid var(–border2);flex-shrink:0}
+.add-city-row{display:flex;gap:6px;margin-top:8px}
+.add-city-inp{flex:1;background:var(–bg3);border:1px solid var(–border2);border-radius:var(–radius-sm);padding:7px 10px;color:var(–text);font-size:13px;font-family:‘DM Sans’,sans-serif;outline:none}
+.add-city-inp::placeholder{color:var(–text3)}
+.add-city-btn{background:var(–green);border:none;border-radius:var(–radius-sm);padding:7px 14px;color:white;font-size:13px;cursor:pointer;font-family:‘DM Sans’,sans-serif;white-space:nowrap}
+</style>
+
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div>
+      <div class="header-title">LifeReset</div>
+      <div class="header-sub">Твой план. Без срывов.</div>
+    </div>
+    <button class="theme-btn" id="theme-btn" onclick="toggleTheme()">☀️ Светлая</button>
+  </div>
+  <div class="stats-row">
+    <div class="stat-pill"><span>96.5</span> кг старт</div>
+    <div class="stat-pill">→ <span>82</span> кг цель</div>
+    <div class="stat-pill"><span>1900</span> ккал/день</div>
+    <div class="stat-pill"><span>12–16</span> недель</div>
+  </div>
+</div>
+
+<nav class="nav">
+  <button class="nbtn on" onclick="sw('rules',this)">Правила</button>
+  <button class="nbtn" onclick="sw('schedule',this)">Расписание</button>
+  <button class="nbtn" onclick="sw('food',this)">Питание</button>
+  <button class="nbtn" onclick="sw('training',this)">Тренировки</button>
+  <button class="nbtn" onclick="sw('supps',this)">Добавки</button>
+  <button class="nbtn" onclick="sw('shop',this)">Penny</button>
+  <button class="nbtn" onclick="sw('daily',this)">День</button>
+  <button class="nbtn" onclick="sw('tracker',this)">Трекер</button>
+</nav>
+
+<main class="main">
+
+<!-- RULES -->
+
+<div id="pg-rules" class="pg on">
+  <div class="weather-card" id="weather-card">
+    <div>
+      <div class="weather-city" id="w-city">CHEMNITZ — СЕЙЧАС</div>
+      <div class="weather-temp" id="w-temp">—</div>
+      <div class="weather-desc" id="w-desc">Загрузка...</div>
+    </div>
+    <div class="weather-right">
+      <div class="weather-detail-row" id="w-wind"></div>
+      <div class="weather-detail-row" id="w-humid"></div>
+      <div class="weather-detail-row" id="w-uv"></div>
+    </div>
+    <div class="uv-bar" id="uv-bar" style="display:none;width:100%">
+      <span class="uv-label">UV</span>
+      <div style="flex:1;position:relative;height:6px">
+        <div class="uv-track" style="width:100%;height:6px;border-radius:3px"></div>
+        <div id="uv-dot" style="position:absolute;top:-2px;width:10px;height:10px;border-radius:50%;background:white;border:2px solid var(--bg);box-shadow:0 0 0 1px rgba(0,0,0,0.4);transition:left 0.5s;left:0"></div>
+      </div>
+      <span class="uv-val" id="uv-val">—</span>
+    </div>
+    <div class="weather-forecast" id="w-forecast"></div>
+  </div>
+  <div class="sec-label">Главные правила</div>
+  <div class="hero-stats">
+    <div class="hstat"><div class="hstat-val">96.5</div><div class="hstat-lbl">кг старт</div></div>
+    <div class="hstat"><div class="hstat-val">82</div><div class="hstat-lbl">кг цель</div></div>
+    <div class="hstat"><div class="hstat-val">1900</div><div class="hstat-lbl">ккал/день</div></div>
+    <div class="hstat"><div class="hstat-val">32.2</div><div class="hstat-lbl">ИМТ</div></div>
+  </div>
+  <div class="big-rule" style="border-left-color:#2a7fd4"><div class="big-rule-title">1 — Стабильность важнее идеала</div><div class="big-rule-sub">70% плана каждый день лучше, чем 100% три дня и срыв.</div></div>
+  <div class="big-rule" style="border-left-color:#4a9e2f"><div class="big-rule-title">2 — Живот убирается едой, не упражнениями</div><div class="big-rule-sub">Питание = 70% результата. Убери сахар и выпечку — уйдёт 3–5 кг само.</div></div>
+  <div class="big-rule" style="border-left-color:#c47f1a"><div class="big-rule-title">3 — Еда должна быть готова заранее</div><div class="big-rule-sub">Готовишь в субботу и среду на 3–4 дня. Нет готовой еды — ты проиграл.</div></div>
+  <div class="big-rule" style="border-left-color:#c43a3a"><div class="big-rule-title">4 — Сон = жир</div><div class="big-rule-sub">Плохой сон → кортизол → тяга к сладкому → вес стоит. Спать до 23:30.</div></div>
+  <div class="big-rule" style="border-left-color:#8a5fd4"><div class="big-rule-title">5 — Не добавляй, убирай</div><div class="big-rule-sub">2 недели строго по плану. Не усложняй. Потом усиливай.</div></div>
+  <div class="div"></div>
+  <div class="sec-label">Прогноз по фазам</div>
+  <div class="phases">
+    <div class="phase"><div class="phase-wk">1–2 нед.</div><div class="phase-kg">−2–3 кг</div><div class="phase-desc">Уходит вода.</div><div class="phase-bar" style="background:#2a7fd4"></div></div>
+    <div class="phase"><div class="phase-wk">3–6 нед.</div><div class="phase-kg">−3–5 кг</div><div class="phase-desc">Жир уходит.</div><div class="phase-bar" style="background:#4a9e2f"></div></div>
+    <div class="phase"><div class="phase-wk">7–12 нед.</div><div class="phase-kg">−5–7 кг</div><div class="phase-desc">Тело сушится.</div><div class="phase-bar" style="background:#c47f1a"></div></div>
+    <div class="phase"><div class="phase-wk">12–16 нед.</div><div class="phase-kg">−15 кг</div><div class="phase-desc">Цель!</div><div class="phase-bar" style="background:#4a9e2f"></div></div>
+  </div>
+  <div class="box box-blue">Взвешивайся 1 раз в неделю — утром, натощак. Не каждый день.</div>
+</div>
+<!-- SCHEDULE -->
+<div id="pg-schedule" class="pg">
+  <div class="box box-blue">Нажми на блюдо — получишь инструкцию как готовить. Нажми 💪 — упражнения.</div>
+  <div class="sec-label">Расписание по дням</div>
+  <div class="day-tabs">
+    <button class="dtab on" onclick="switchDay('mon',this)">Пн</button>
+    <button class="dtab" onclick="switchDay('tue',this)">Вт</button>
+    <button class="dtab" onclick="switchDay('wed',this)">Ср</button>
+    <button class="dtab" onclick="switchDay('thu',this)">Чт</button>
+    <button class="dtab" onclick="switchDay('fri',this)">Пт</button>
+    <button class="dtab" onclick="switchDay('sat',this)">Сб</button>
+    <button class="dtab" onclick="switchDay('sun',this)">Вс</button>
+  </div>
+  <div id="day-mon" class="day-pg on"><div class="tl">
+    <div class="tl-item"><div class="tl-dot b"></div><div class="tl-time">06:00</div><div class="tl-title">Подъём → упражнения (8 мин)</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('workout_morning')">💪 Утренний комплекс</span></div></div>
+    <div class="tl-item"><div class="tl-dot g"></div><div class="tl-time">06:20</div><div class="tl-title">Завтрак №1</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('eggs_boiled')">🥚 Яйца варёные 3шт</span><span class="chip has-recipe" onclick="openR('bread_toast')">🍞 Хлеб цельнозерновой</span><span class="chip has-recipe" onclick="openR('veggies_raw')">🥒 Огурец + помидор</span></div></div>
+    <div class="tl-item"><div class="tl-dot a"></div><div class="tl-time">07:15</div><div class="tl-title">Садик</div><div class="tl-sub">Возвращаешься 08:30–08:45</div><div class="food-chips"><span class="chip chip-map" onclick="openMaps()">🗺️ Маршрут</span></div></div>
+    <div class="tl-item"><div class="tl-dot g"></div><div class="tl-time">09:00</div><div class="tl-title">Завтрак №2 + Креатин 5г</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('oatmeal')">🌾 Овсянка 60г</span><span class="chip has-recipe" onclick="openR('banana')">🍌 Банан</span><span class="chip has-recipe" onclick="openR('nuts')">🥜 Орехи 15г</span></div></div>
+    <div class="tl-item"><div class="tl-dot g"></div><div class="tl-time">12:30</div><div class="tl-title">Обед</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('chicken')">🍗 Курица 180г</span><span class="chip has-recipe" onclick="openR('rice')">🍚 Рис 80г</span><span class="chip has-recipe" onclick="openR('veggies')">🥦 Овощи</span></div></div>
+    <div class="tl-item"><div class="tl-dot b"></div><div class="tl-time">13:00</div><div class="tl-title">Движение 10 мин</div><div class="tl-sub">Ходьба. Если практика — пропусти.</div></div>
+    <div class="tl-item"><div class="tl-dot a"></div><div class="tl-time">15:30</div><div class="tl-title">Перекус</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('yogurt')">🥛 Йогурт греческий 200г</span></div></div>
+    <div class="tl-item"><div class="tl-dot g"></div><div class="tl-time">17:30</div><div class="tl-title">Ужин</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('quark')">🧀 Творог 200г</span><span class="chip has-recipe" onclick="openR('veggies')">🥦 Овощи</span></div></div>
+    <div class="tl-item"><div class="tl-dot b"></div><div class="tl-time">20:00</div><div class="tl-title">Тренировка — полный комплекс</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('workout_full')">💪 Показать упражнения</span></div></div>
+    <div class="tl-item"><div class="tl-dot a"></div><div class="tl-time">21:30</div><div class="tl-title">Добавки</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('cal_mag')">💊 Calcium+Magnesium+Zinc</span><span class="chip has-recipe" onclick="openR('omega3')">🐟 Omega-3</span></div></div>
+    <div class="tl-item"><div class="tl-dot r"></div><div class="tl-time">23:30</div><div class="tl-title">Сон — не позже!</div></div>
+  </div></div>
+  <div id="day-tue" class="day-pg"><div class="tl">
+    <div class="tl-item"><div class="tl-dot b"></div><div class="tl-time">06:00</div><div class="tl-title">Подъём → упражнения (8 мин)</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('workout_morning')">💪 Утренний комплекс</span></div></div>
+    <div class="tl-item"><div class="tl-dot g"></div><div class="tl-time">06:20</div><div class="tl-title">Завтрак №1</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('eggs_fried')">🍳 Яичница 3 яйца</span><span class="chip has-recipe" onclick="openR('bread_toast')">🍞 Хлеб</span></div></div>
+    <div class="tl-item"><div class="tl-dot a"></div><div class="tl-time">07:15</div><div class="tl-title">Садик</div><div class="food-chips"><span class="chip chip-map" onclick="openMaps()">🗺️ Маршрут</span></div></div>
+    <div class="tl-item"><div class="tl-dot g"></div><div class="tl-time">09:00</div><div class="tl-title">Завтрак №2 + Креатин 5г</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('oatmeal')">🌾 Овсянка 60г</span><span class="chip has-recipe" onclick="openR('berries')">🫐 Ягоды 100г</span></div></div>
+    <div class="tl-item"><div class="tl-dot g"></div><div class="tl-time">12:30</div><div class="tl-title">Обед</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('chicken')">🍗 Курица 180г</span><span class="chip has-recipe" onclick="openR('buckwheat')">🌿 Гречка 80г</span><span class="chip has-recipe" onclick="openR('veggies')">🥦 Овощи</span></div></div>
+    <div class="tl-item"><div class="tl-dot a"></div><div class="tl-time">15:30</div><div class="tl-title">Перекус</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('apple')">🍎 Яблоко</span><span class="chip has-recipe" onclick="openR('nuts')">🥜 Орехи 15г</span></div></div>
+    <div class="tl-item"><div class="tl-dot g"></div><div class="tl-time">17:30</div><div class="tl-title">Ужин</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('eggs_boiled')">🥚 Яйца 3шт</span><span class="chip has-recipe" onclick="openR('veggies')">🥦 Овощи</span></div></div>
+    <div class="tl-item"><div class="tl-dot b"></div><div class="tl-time">20:00</div><div class="tl-title">Вт — растяжка 10 мин</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('workout_stretch')">🧘 Показать растяжку</span></div></div>
+    <div class="tl-item"><div class="tl-dot a"></div><div class="tl-time">21:30</div><div class="tl-title">Добавки</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('cal_mag')">💊 Calcium+Magnesium+Zinc</span><span class="chip has-recipe" onclick="openR('omega3')">🐟 Omega-3</span></div></div>
+  </div></div>
+  <div id="day-wed" class="day-pg">
+    <div class="box box-amber" style="margin-bottom:10px">Среда — день готовки! После практики готовишь фарш + гречку на Чт/Пт.</div>
+    <div class="tl">
+    <div class="tl-item"><div class="tl-dot b"></div><div class="tl-time">06:00</div><div class="tl-title">Подъём → упражнения (8 мин)</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('workout_morning')">💪 Утренний комплекс</span></div></div>
+    <div class="tl-item"><div class="tl-dot g"></div><div class="tl-time">06:20</div><div class="tl-title">Завтрак №1</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('eggs_boiled')">🥚 Яйца 3шт</span><span class="chip has-recipe" onclick="openR('bread_toast')">🍞 Хлеб</span></div></div>
+    <div class="tl-item"><div class="tl-dot g"></div><div class="tl-time">09:00</div><div class="tl-title">Завтрак №2 + Креатин 5г</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('oatmeal')">🌾 Овсянка 60г</span><span class="chip has-recipe" onclick="openR('banana')">🍌 Банан</span></div></div>
+    <div class="tl-item"><div class="tl-dot g"></div><div class="tl-time">12:30</div><div class="tl-title">Обед</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('chicken')">🍗 Курица 180г</span><span class="chip has-recipe" onclick="openR('rice')">🍚 Рис 80г</span><span class="chip has-recipe" onclick="openR('veggies')">🥦 Овощи</span></div></div>
+    <div class="tl-item"><div class="tl-dot a"></div><div class="tl-time">15:30</div><div class="tl-title">Перекус</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('yogurt')">🥛 Йогурт 200г</span></div></div>
+    <div class="tl-item"><div class="tl-dot g"></div><div class="tl-time">17:30</div><div class="tl-title">Ужин + ГОТОВКА после</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('minced')">🥩 Фарш 180г</span><span class="chip has-recipe" onclick="openR('veggies')">🥦 Овощи</span><span class="chip has-recipe" onclick="openR('meal_prep_wed')">📋 Инструкция готовки</span></div></div>
+    <div class="tl-item"><div class="tl-dot b"></div><div class="tl-time">20:00</div><div class="tl-title">Тренировка — полный комплекс</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('workout_full')">💪 Показать упражнения</span></div></div>
+    <div class="tl-item"><div class="tl-dot a"></div><div class="tl-time">21:30</div><div class="tl-title">Добавки</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('cal_mag')">💊 Calcium+Magnesium+Zinc</span><span class="chip has-recipe" onclick="openR('omega3')">🐟 Omega-3</span></div></div>
+  </div></div>
+  <div id="day-thu" class="day-pg"><div class="tl">
+    <div class="tl-item"><div class="tl-dot b"></div><div class="tl-time">06:00</div><div class="tl-title">Подъём → упражнения (8 мин)</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('workout_morning')">💪 Утренний комплекс</span></div></div>
+    <div class="tl-item"><div class="tl-dot g"></div><div class="tl-time">06:20</div><div class="tl-title">Завтрак №1</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('oatmeal')">🌾 Овсянка 60г</span><span class="chip has-recipe" onclick="openR('berries')">🫐 Ягоды 100г</span></div></div>
+    <div class="tl-item"><div class="tl-dot g"></div><div class="tl-time">09:00</div><div class="tl-title">Завтрак №2 + Креатин 5г</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('eggs_boiled')">🥚 Яйца 2шт</span><span class="chip has-recipe" onclick="openR('quark')">🧀 Творог 150г</span></div></div>
+    <div class="tl-item"><div class="tl-dot g"></div><div class="tl-time">12:30</div><div class="tl-title">Обед</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('minced')">🥩 Фарш 180г</span><span class="chip has-recipe" onclick="openR('buckwheat')">🌿 Гречка 80г</span><span class="chip has-recipe" onclick="openR('veggies')">🥦 Овощи</span></div></div>
+    <div class="tl-item"><div class="tl-dot a"></div><div class="tl-time">15:30</div><div class="tl-title">Перекус</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('quark')">🧀 Творог 200г</span></div></div>
+    <div class="tl-item"><div class="tl-dot g"></div><div class="tl-time">17:30</div><div class="tl-title">Ужин</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('eggs_boiled')">🥚 Яйца 2шт</span><span class="chip has-recipe" onclick="openR('veggies')">🥦 Овощи</span></div></div>
+    <div class="tl-item"><div class="tl-dot b"></div><div class="tl-time">20:00</div><div class="tl-title">Чт — растяжка 10 мин</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('workout_stretch')">🧘 Показать растяжку</span></div></div>
+    <div class="tl-item"><div class="tl-dot a"></div><div class="tl-time">21:30</div><div class="tl-title">Добавки</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('cal_mag')">💊 Calcium+Magnesium+Zinc</span><span class="chip has-recipe" onclick="openR('omega3')">🐟 Omega-3</span></div></div>
+  </div></div>
+  <div id="day-fri" class="day-pg"><div class="tl">
+    <div class="tl-item"><div class="tl-dot b"></div><div class="tl-time">06:00</div><div class="tl-title">Подъём → упражнения (8 мин)</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('workout_morning')">💪 Утренний комплекс</span></div></div>
+    <div class="tl-item"><div class="tl-dot g"></div><div class="tl-time">06:20</div><div class="tl-title">Завтрак №1</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('eggs_boiled')">🥚 Яйца 3шт</span><span class="chip has-recipe" onclick="openR('bread_toast')">🍞 Хлеб</span></div></div>
+    <div class="tl-item"><div class="tl-dot g"></div><div class="tl-time">09:00</div><div class="tl-title">Завтрак №2 + Креатин 5г</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('oatmeal')">🌾 Овсянка 60г</span><span class="chip has-recipe" onclick="openR('banana')">🍌 Банан</span></div></div>
+    <div class="tl-item"><div class="tl-dot g"></div><div class="tl-time">12:30</div><div class="tl-title">Обед</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('minced')">🥩 Фарш говяжий 180г</span><span class="chip has-recipe" onclick="openR('buckwheat')">🌿 Гречка 80г</span><span class="chip has-recipe" onclick="openR('veggies')">🥦 Овощи</span></div></div>
+    <div class="tl-item"><div class="tl-dot a"></div><div class="tl-time">15:30</div><div class="tl-title">Перекус</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('apple')">🍎 Яблоко</span></div></div>
+    <div class="tl-item"><div class="tl-dot g"></div><div class="tl-time">17:30</div><div class="tl-title">Ужин</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('quark')">🧀 Творог 200г</span><span class="chip has-recipe" onclick="openR('veggies')">🥦 Овощи</span></div></div>
+    <div class="tl-item"><div class="tl-dot b"></div><div class="tl-time">20:00</div><div class="tl-title">Тренировка — полный комплекс</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('workout_full')">💪 Показать упражнения</span></div></div>
+    <div class="tl-item"><div class="tl-dot a"></div><div class="tl-time">21:30</div><div class="tl-title">Добавки</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('cal_mag')">💊 Calcium+Magnesium+Zinc</span><span class="chip has-recipe" onclick="openR('omega3')">🐟 Omega-3</span></div></div>
+  </div></div>
+  <div id="day-sat" class="day-pg">
+    <div class="box box-amber" style="margin-bottom:10px">Суббота — MEAL PREP. Готовишь на 3–4 дня!</div>
+    <div class="tl">
+    <div class="tl-item"><div class="tl-dot b"></div><div class="tl-time">07:00</div><div class="tl-title">Подъём + упражнения</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('workout_morning')">💪 Утренний комплекс</span></div></div>
+    <div class="tl-item"><div class="tl-dot g"></div><div class="tl-time">08:00</div><div class="tl-title">Завтрак</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('oatmeal')">🌾 Овсянка 60г</span><span class="chip has-recipe" onclick="openR('banana')">🍌 Банан</span></div></div>
+    <div class="tl-item"><div class="tl-dot a"></div><div class="tl-time">09:00</div><div class="tl-title">MEAL PREP</div><div class="tl-sub">Курица 1.2 кг · Рис 350г · Яйца 8шт · Овощи нарезать</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('meal_prep_sat')">📋 Инструкция готовки</span></div></div>
+    <div class="tl-item"><div class="tl-dot g"></div><div class="tl-time">12:00</div><div class="tl-title">Обед</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('minced')">🥩 Фарш 180г</span><span class="chip has-recipe" onclick="openR('buckwheat')">🌿 Гречка 80г</span></div></div>
+    <div class="tl-item"><div class="tl-dot a"></div><div class="tl-time">15:00</div><div class="tl-title">Перекус</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('yogurt')">🥛 Йогурт 200г</span></div></div>
+    <div class="tl-item"><div class="tl-dot g"></div><div class="tl-time">18:00</div><div class="tl-title">Ужин</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('eggs_boiled')">🥚 Яйца</span><span class="chip has-recipe" onclick="openR('yogurt')">🥛 Йогурт</span></div></div>
+    <div class="tl-item"><div class="tl-dot b"></div><div class="tl-time">20:00</div><div class="tl-title">Сб — растяжка 10 мин</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('workout_stretch')">🧘 Показать растяжку</span></div></div>
+    <div class="tl-item"><div class="tl-dot a"></div><div class="tl-time">21:30</div><div class="tl-title">Добавки</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('cal_mag')">💊 Calcium+Magnesium+Zinc</span><span class="chip has-recipe" onclick="openR('omega3')">🐟 Omega-3</span><span class="chip has-recipe" onclick="openR('vitd3')">☀️ Vitamin D3</span></div></div>
+  </div></div>
+  <div id="day-sun" class="day-pg"><div class="tl">
+    <div class="tl-item"><div class="tl-dot b"></div><div class="tl-time">07:00</div><div class="tl-title">Подъём + зарядка</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('workout_morning')">💪 Утренний комплекс</span></div></div>
+    <div class="tl-item"><div class="tl-dot g"></div><div class="tl-time">08:00</div><div class="tl-title">Завтрак</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('eggs_fried')">🍳 Яичница 3 яйца</span><span class="chip has-recipe" onclick="openR('bread_toast')">🍞 Хлеб</span></div></div>
+    <div class="tl-item"><div class="tl-dot g"></div><div class="tl-time">12:00</div><div class="tl-title">Обед</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('chicken')">🍗 Курица 180г</span><span class="chip has-recipe" onclick="openR('rice')">🍚 Рис 80г</span></div></div>
+    <div class="tl-item"><div class="tl-dot a"></div><div class="tl-time">15:00</div><div class="tl-title">Перекус</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('apple')">🍎 Фрукт</span></div></div>
+    <div class="tl-item"><div class="tl-dot g"></div><div class="tl-time">18:00</div><div class="tl-title">Ужин</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('quark')">🧀 Творог</span><span class="chip has-recipe" onclick="openR('minced')">🥩 Фарш</span></div></div>
+    <div class="tl-item"><div class="tl-dot a"></div><div class="tl-time">21:30</div><div class="tl-title">Добавки</div><div class="food-chips"><span class="chip has-recipe" onclick="openR('cal_mag')">💊 Calcium+Magnesium+Zinc</span><span class="chip has-recipe" onclick="openR('omega3')">🐟 Omega-3</span><span class="chip has-recipe" onclick="openR('vitd3')">☀️ Vitamin D3</span></div></div>
+    <div class="tl-item"><div class="tl-dot r"></div><div class="tl-time">23:00</div><div class="tl-title">Сон — завтра рано вставать</div></div>
+  </div></div>
+</div>
+
+<!-- FOOD -->
+
+<div id="pg-food" class="pg">
+  <div class="sec-label">Формула питания</div>
+  <div class="card" style="margin-bottom:1rem">
+    <div class="card-title" style="margin-bottom:10px">1900 ккал/день</div>
+    <div class="macro-row"><span class="macro-label">Белок 180г</span><div class="macro-track"><div class="macro-fill" style="width:38%;background:#2a7fd4"></div></div><span class="macro-val">720 ккал</span></div>
+    <div class="macro-row"><span class="macro-label">Жиры 65г</span><div class="macro-track"><div class="macro-fill" style="width:30%;background:#c47f1a"></div></div><span class="macro-val">585 ккал</span></div>
+    <div class="macro-row"><span class="macro-label">Углеводы 150г</span><div class="macro-track"><div class="macro-fill" style="width:32%;background:#4a9e2f"></div></div><span class="macro-val">600 ккал</span></div>
+  </div>
+  <div class="sec-label">Порции — запомни раз</div>
+  <div class="portions">
+    <div class="portion"><div class="portion-icon">🥩</div><div class="portion-what">Мясо / рыба</div><div class="portion-how">= ладонь</div><div class="portion-g">150–200г</div></div>
+    <div class="portion"><div class="portion-icon">🍚</div><div class="portion-what">Крупа</div><div class="portion-how">= кулак (сухой!)</div><div class="portion-g">80–100г</div></div>
+    <div class="portion"><div class="portion-icon">🫒</div><div class="portion-what">Масло</div><div class="portion-how">= 1 ст. ложка</div><div class="portion-g">10г макс</div></div>
+    <div class="portion"><div class="portion-icon">🥜</div><div class="portion-what">Орехи</div><div class="portion-how">= большой палец</div><div class="portion-g">15г макс</div></div>
+    <div class="portion"><div class="portion-icon">🥦</div><div class="portion-what">Овощи</div><div class="portion-how">= 2 кулака min</div><div class="portion-g">без лимита</div></div>
+    <div class="portion"><div class="portion-icon">🥛</div><div class="portion-what">Йогурт/кварк</div><div class="portion-how">= 1 упаковка</div><div class="portion-g">200г</div></div>
+  </div>
+  <div class="div"></div>
+  <div class="sec-label">Запрещено</div>
+  <div class="card">
+    <div style="display:flex;flex-wrap:wrap;gap:6px">
+      <span style="background:var(--red-bg);color:var(--red-text);font-size:12px;padding:4px 10px;border-radius:20px">сахар</span>
+      <span style="background:var(--red-bg);color:var(--red-text);font-size:12px;padding:4px 10px;border-radius:20px">выпечка</span>
+      <span style="background:var(--red-bg);color:var(--red-text);font-size:12px;padding:4px 10px;border-radius:20px">газировка</span>
+      <span style="background:var(--red-bg);color:var(--red-text);font-size:12px;padding:4px 10px;border-radius:20px">фастфуд</span>
+      <span style="background:var(--red-bg);color:var(--red-text);font-size:12px;padding:4px 10px;border-radius:20px">жареное</span>
+      <span style="background:var(--red-bg);color:var(--red-text);font-size:12px;padding:4px 10px;border-radius:20px">соки в пакетах</span>
+    </div>
+  </div>
+  <div class="box box-green">Пьёшь: вода 2л/день · кофе без сахара · зелёный чай</div>
+</div>
+
+<!-- TRAINING -->
+
+<div id="pg-training" class="pg">
+  <div class="box box-blue">Утро — каждый день 8 мин. Вечер Пн/Ср/Пт — 15–20 мин. Вт/Чт/Сб — растяжка.</div>
+  <div class="sec-label">Утро — каждый день до душа</div>
+  <div class="ex-block">
+    <div class="ex-head"><span class="ex-head-title">1 круг, без паузы</span><span class="ex-head-badge">8 мин</span></div>
+    <div class="ex-body">
+      <div class="ex-row"><span class="ex-name">Отжимания (Liegestütze)</span><span class="ex-val">10–15 раз</span></div>
+      <div class="ex-row"><span class="ex-name">Приседания (Kniebeugen)</span><span class="ex-val">15–20 раз</span></div>
+      <div class="ex-row"><span class="ex-name">Планка (Plank)</span><span class="ex-val">30–40 сек</span></div>
+      <div class="ex-row"><span class="ex-name">Альпинист (Mountain Climbers)</span><span class="ex-val">20 раз</span></div>
+      <div class="ex-row"><span class="ex-name">Прыжки (Jumping Jacks)</span><span class="ex-val">30 раз</span></div>
+      <div class="ex-note">Если плохо поспал — делай половину. Но НЕ пропускай.</div>
+    </div>
+  </div>
+  <div class="sec-label" style="margin-top:1rem">Вечер — прогрессия (Пн/Ср/Пт)</div>
+  <div class="ex-block"><div class="ex-head"><span class="ex-head-title">Недели 1–2</span><span class="ex-head-badge">2–3 круга</span></div><div class="ex-body"><div class="ex-row"><span class="ex-name">Отжимания</span><span class="ex-val">10–12 раз</span></div><div class="ex-row"><span class="ex-name">Приседания</span><span class="ex-val">15 раз</span></div><div class="ex-row"><span class="ex-name">Планка</span><span class="ex-val">30 сек</span></div><div class="ex-row"><span class="ex-name">Боковая планка</span><span class="ex-val">20 сек каждая</span></div><div class="ex-note">Отдых 60 сек.</div></div></div>
+  <div class="ex-block"><div class="ex-head"><span class="ex-head-title">Недели 3–4</span><span class="ex-head-badge">3 круга</span></div><div class="ex-body"><div class="ex-row"><span class="ex-name">Отжимания</span><span class="ex-val">15–18 раз</span></div><div class="ex-row"><span class="ex-name">Приседания</span><span class="ex-val">20 раз</span></div><div class="ex-row"><span class="ex-name">Планка</span><span class="ex-val">45 сек</span></div><div class="ex-note">Отдых 45 сек.</div></div></div>
+  <div class="ex-block"><div class="ex-head"><span class="ex-head-title">Недели 5–8</span><span class="ex-head-badge">3–4 круга</span></div><div class="ex-body"><div class="ex-row"><span class="ex-name">Отжимания с паузой 1 сек</span><span class="ex-val">15–20 раз</span></div><div class="ex-row"><span class="ex-name">Приседания медленно (3 сек)</span><span class="ex-val">20–25 раз</span></div><div class="ex-row"><span class="ex-name">Планка с подъёмом ноги</span><span class="ex-val">45–60 сек</span></div><div class="ex-note">Отдых 30 сек.</div></div></div>
+  <div class="div"></div>
+  <div class="sec-label">Бег — 2 раза в неделю (Сб/Вс)</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+    <div style="background:var(--green-bg);border-radius:var(--radius-sm);padding:10px 12px"><div style="font-size:10px;color:var(--green-text);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px">Доп. калории</div><div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--text)">~400</div><div style="font-size:11px;color:var(--text2)">в неделю</div></div>
+    <div style="background:var(--blue-bg);border-radius:var(--radius-sm);padding:10px 12px"><div style="font-size:10px;color:var(--blue-text);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px">Доп. потеря</div><div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--text)">~0.5 кг</div><div style="font-size:11px;color:var(--text2)">в месяц</div></div>
+  </div>
+  <div class="ex-block"><div class="ex-head"><span class="ex-head-title">План с нуля — 8 недель</span><span class="ex-head-badge">2× в нед.</span></div><div class="ex-body"><div class="ex-row"><span class="ex-name">Нед. 1–2: Чередование</span><span class="ex-val">1 мин бег + 2 мин ходьба × 6</span></div><div class="ex-row"><span class="ex-name">Нед. 3–4: Больше бега</span><span class="ex-val">2 мин бег + 1 мин ходьба × 6</span></div><div class="ex-row"><span class="ex-name">Нед. 5–6: Непрерывно</span><span class="ex-val">15–20 мин без остановки</span></div><div class="ex-row"><span class="ex-name">Нед. 7–8: Дистанция</span><span class="ex-val">2 км спокойно</span></div><div class="ex-note">Темп: можешь говорить — правильно. 2 км ≈ 20 мин.</div></div></div>
+  <div class="box box-amber">Не начинай с 2 км сразу. Нед. 1–2 строго чередование.</div>
+</div>
+
+<!-- SUPPLEMENTS -->
+
+<div id="pg-supps" class="pg">
+  <div class="sec-label">Добавки</div>
+  <div class="card">
+    <div class="supp-item">
+      <div class="sdot" style="background:var(--green)"></div>
+      <div><div class="sname">Креатин — Gym Nutrition Extrapure</div><div class="sdesc">5г утром с завтраком №2. Эффект через 2 недели — сила и выносливость. Регулярность важнее времени.</div><span class="stag stag-g">каждый день утром</span></div>
+    </div>
+    <div class="supp-item">
+      <div class="sdot" style="background:var(--green)"></div>
+      <div><div class="sname">Calcium + Magnesium + Zinc + D3 — WeightWorld</div><div class="sdesc">Вечером после ужина (~21:30). Магний → сон и восстановление. D3 есть внутри — поэтому Taxofit не нужен каждый день.</div><span class="stag stag-g">каждый вечер</span></div>
+    </div>
+    <div class="supp-item">
+      <div class="sdot" style="background:var(--amber)"></div>
+      <div><div class="sname">Vitamin D3 2500 I.E. — Taxofit</div><div class="sdesc">Принимай только если пропустил WeightWorld. 1×/день макс. Зимой в Германии особенно важен.</div><span class="stag stag-a">только без WeightWorld</span></div>
+    </div>
+    <div class="supp-item">
+      <div class="sdot" style="background:var(--green)"></div>
+      <div><div class="sname">Omega-3 1000 — Mivolis (dm)</div><div class="sdesc">1 капсула с обедом или ужином. 300 мг EPA+DHA. Сердце, мозг, снижение воспаления. Принимай каждый день.</div><span class="stag stag-g">1 капсула с едой</span></div>
+    </div>
+  </div>
+  <div class="box box-blue">Схема: утром Креатин 5г · с едой Omega-3 · вечером WeightWorld. Taxofit только в дни без WeightWorld.</div>
+</div>
+
+<!-- SHOP -->
+
+<div id="pg-shop" class="pg">
+  <div class="box box-green">Закупка в Penny Chemnitz — на 3–4 дня. Нажми чтобы отметить купленное.</div>
+  <div id="shoplist">
+    <div class="shop-group"><div class="shop-group-title">Белок</div>
+      <div class="shop-item" onclick="ts(this)" data-p="8.50"><div class="sbox"></div><img class="shop-img" src="https://images.unsplash.com/photo-1604503468506-a8da13d82791?w=120&q=60" alt=""><div class="shop-info"><div class="shop-ru">Куриная грудка — 1.5 кг</div><div class="shop-de">Hähnchenbrust Filet (frisch oder TK)</div></div><span class="shop-price">~8.50€</span></div>
+      <div class="shop-item" onclick="ts(this)" data-p="6.00"><div class="sbox"></div><div class="shop-emoji">🐟</div><div class="shop-info"><div class="shop-ru">Рыба / минтай — 800г</div><div class="shop-de">Seelachs Filet tiefgekühlt</div></div><span class="shop-price">~6.00€</span></div>
+      <div class="shop-item" onclick="ts(this)" data-p="3.30"><div class="sbox"></div><div class="shop-emoji">🥚</div><div class="shop-info"><div class="shop-ru">Яйца — 20 шт</div><div class="shop-de">Eier M/L Bodenhaltung — 10er Pack × 2</div></div><span class="shop-price">~3.30€</span></div>
+      <div class="shop-item" onclick="ts(this)" data-p="2.00"><div class="sbox"></div><div class="shop-emoji">🥛</div><div class="shop-info"><div class="shop-ru">Греческий йогурт без сахара — 500г</div><div class="shop-de">Griechischer Joghurt 0% Fett</div></div><span class="shop-price">~2.00€</span></div>
+      <div class="shop-item" onclick="ts(this)" data-p="1.00"><div class="sbox"></div><div class="shop-emoji">🧀</div><div class="shop-info"><div class="shop-ru">Творог / кварк — 500г</div><div class="shop-de">Magerquark (Speisequark Magerstufe)</div></div><span class="shop-price">~1.00€</span></div>
+      <div class="shop-item" onclick="ts(this)" data-p="3.50"><div class="sbox"></div><div class="shop-emoji">🥩</div><div class="shop-info"><div class="shop-ru">Фарш говяжий — 500г</div><div class="shop-de">Rinderhackfleisch — 500g Packung</div></div><span class="shop-price">~3.50€</span></div>
+    </div>
+    <div class="shop-group"><div class="shop-group-title">Углеводы</div>
+      <div class="shop-item" onclick="ts(this)" data-p="1.30"><div class="sbox"></div><div class="shop-emoji">🌾</div><div class="shop-info"><div class="shop-ru">Овсянка — 500г</div><div class="shop-de">Haferflocken (zart oder kernig)</div></div><span class="shop-price">~1.30€</span></div>
+      <div class="shop-item" onclick="ts(this)" data-p="1.50"><div class="sbox"></div><div class="shop-emoji">🌿</div><div class="shop-info"><div class="shop-ru">Гречка — 500г</div><div class="shop-de">Buchweizen — Regal Bio/Naturkost</div></div><span class="shop-price">~1.50€</span></div>
+      <div class="shop-item" onclick="ts(this)" data-p="1.40"><div class="sbox"></div><div class="shop-emoji">🍚</div><div class="shop-info"><div class="shop-ru">Рис — 500г</div><div class="shop-de">Naturreis / Langkornreis</div></div><span class="shop-price">~1.40€</span></div>
+      <div class="shop-item" onclick="ts(this)" data-p="2.00"><div class="sbox"></div><div class="shop-emoji">🍞</div><div class="shop-info"><div class="shop-ru">Цельнозерновой хлеб</div><div class="shop-de">Vollkornbrot — 1 Laib (~500g)</div></div><span class="shop-price">~2.00€</span></div>
+    </div>
+    <div class="shop-group"><div class="shop-group-title">Овощи и фрукты</div>
+      <div class="shop-item" onclick="ts(this)" data-p="1.50"><div class="sbox"></div><div class="shop-emoji">🥦</div><div class="shop-info"><div class="shop-ru">Брокколи — 500г</div><div class="shop-de">Brokkoli (frisch oder TK)</div></div><span class="shop-price">~1.50€</span></div>
+      <div class="shop-item" onclick="ts(this)" data-p="1.30"><div class="sbox"></div><div class="shop-emoji">🥒</div><div class="shop-info"><div class="shop-ru">Огурцы — 3 шт</div><div class="shop-de">Salatgurke</div></div><span class="shop-price">~1.30€</span></div>
+      <div class="shop-item" onclick="ts(this)" data-p="2.00"><div class="sbox"></div><div class="shop-emoji">🍅</div><div class="shop-info"><div class="shop-ru">Помидоры — 1 кг</div><div class="shop-de">Tomaten — 1 kg Netz</div></div><span class="shop-price">~2.00€</span></div>
+      <div class="shop-item" onclick="ts(this)" data-p="1.60"><div class="sbox"></div><div class="shop-emoji">🫑</div><div class="shop-info"><div class="shop-ru">Перец — 3 шт</div><div class="shop-de">Paprika (rot/gelb/grün)</div></div><span class="shop-price">~1.60€</span></div>
+      <div class="shop-item" onclick="ts(this)" data-p="1.80"><div class="sbox"></div><div class="shop-emoji">🍎</div><div class="shop-info"><div class="shop-ru">Яблоки — 1 кг</div><div class="shop-de">Äpfel — 1 kg Netz</div></div><span class="shop-price">~1.80€</span></div>
+      <div class="shop-item" onclick="ts(this)" data-p="1.50"><div class="sbox"></div><div class="shop-emoji">🍌</div><div class="shop-info"><div class="shop-ru">Бананы — 5 шт</div><div class="shop-de">Bananen — lose, nach Gewicht</div></div><span class="shop-price">~1.50€</span></div>
+      <div class="shop-item" onclick="ts(this)" data-p="2.00"><div class="sbox"></div><div class="shop-emoji">🫐</div><div class="shop-info"><div class="shop-ru">Ягоды замороженные — 500г</div><div class="shop-de">Gemischte Beeren tiefgekühlt</div></div><span class="shop-price">~2.00€</span></div>
+    </div>
+    <div class="shop-group"><div class="shop-group-title">Жиры</div>
+      <div class="shop-item" onclick="ts(this)" data-p="4.00"><div class="sbox"></div><div class="shop-emoji">🫒</div><div class="shop-info"><div class="shop-ru">Оливковое масло — 0.75 л</div><div class="shop-de">Olivenöl nativ extra</div></div><span class="shop-price">~4.00€</span></div>
+      <div class="shop-item" onclick="ts(this)" data-p="2.50"><div class="sbox"></div><div class="shop-emoji">🥜</div><div class="shop-info"><div class="shop-ru">Орехи — 200г</div><div class="shop-de">Mandeln / Walnüsse (ungesalzen)</div></div><span class="shop-price">~2.50€</span></div>
+    </div>
+  </div>
+  <div class="total-bar"><span class="total-lbl">Примерная сумма:</span><span class="total-val" id="total-val">~50€</span></div>
+  <div class="box box-amber" style="margin-top:8px">Не клади в корзину сладкое, выпечку, газировку.</div>
+</div>
+
+<!-- DAILY -->
+
+<div id="pg-daily" class="pg">
+  <div class="sec-label">Ежедневный чеклист</div>
+  <div class="card">
+    <div class="ci" onclick="tc(this)"><div class="ci-box"></div><span class="ci-text">Утренний комплекс (8 мин)</span></div>
+    <div class="ci" onclick="tc(this)"><div class="ci-box"></div><span class="ci-text">Завтрак №1 до 07:00</span></div>
+    <div class="ci" onclick="tc(this)"><div class="ci-box"></div><span class="ci-text">Завтрак №2 + Креатин 5г</span></div>
+    <div class="ci" onclick="tc(this)"><div class="ci-box"></div><span class="ci-text">Обед — белок + крупа + овощи</span></div>
+    <div class="ci" onclick="tc(this)"><div class="ci-box"></div><span class="ci-text">Omega-3 с едой (1 капсула)</span></div>
+    <div class="ci" onclick="tc(this)"><div class="ci-box"></div><span class="ci-text">Перекус — йогурт ИЛИ фрукт</span></div>
+    <div class="ci" onclick="tc(this)"><div class="ci-box"></div><span class="ci-text">Ужин — белок + овощи, без круп</span></div>
+    <div class="ci" onclick="tc(this)"><div class="ci-box"></div><span class="ci-text">Тренировка / растяжка</span></div>
+    <div class="ci" onclick="tc(this)"><div class="ci-box"></div><span class="ci-text">Calcium + Magnesium + Zinc (WeightWorld)</span></div>
+    <div class="ci" onclick="tc(this)"><div class="ci-box"></div><span class="ci-text">Вода 2 литра</span></div>
+    <div class="ci" onclick="tc(this)"><div class="ci-box"></div><span class="ci-text">Без сахара, газировки, выпечки</span></div>
+    <div class="ci" onclick="tc(this)"><div class="ci-box"></div><span class="ci-text">Сон до 23:30</span></div>
+  </div>
+  <div class="div"></div>
+  <div class="sec-label">Каждую неделю</div>
+  <div class="card">
+    <div class="ci" onclick="tc(this)"><div class="ci-box"></div><span class="ci-text">Взвешивание (утром натощак)</span></div>
+    <div class="ci" onclick="tc(this)"><div class="ci-box"></div><span class="ci-text">Суббота — meal prep</span></div>
+    <div class="ci" onclick="tc(this)"><div class="ci-box"></div><span class="ci-text">Среда — второй meal prep</span></div>
+    <div class="ci" onclick="tc(this)"><div class="ci-box"></div><span class="ci-text">Закупка в Penny</span></div>
+  </div>
+  <div class="div"></div>
+  <div class="big-rule" style="border-left-color:var(--red)"><div class="big-rule-title">Если сорвался — читай это</div><div class="big-rule-sub">Один плохой день ≠ провал. Следующий приём пищи — по плану. Не компенсируй голоданием.</div></div>
+</div>
+
+<!-- TRACKER -->
+
+<div id="pg-tracker" class="pg">
+  <div class="sec-label">Трекер веса</div>
+  <div class="box box-blue">Данные сохраняются в браузере на этом устройстве.</div>
+  <div class="w-row">
+    <input type="number" class="w-inp" id="w-inp" placeholder="96.5" step="0.1">
+    <button class="w-btn" onclick="addWeight()">Записать</button>
+  </div>
+  <div id="w-hist" class="w-history"></div>
+  <div class="div"></div>
+  <div class="sec-label">Прогресс по неделям</div>
+  <div class="box box-amber" style="font-size:12px">Нажми — отметить. Нажми снова — снять.</div>
+  <div class="week-tracker" id="week-tracker"></div>
+
+<button class="reset-btn" id="wk-reset-btn" onclick="resetWeeks()" style="margin-top:8px">Сбросить все недели</button>
+
+</div>
+</main>
+
+<!-- BOTTOM PANEL -->
+
+<div class="bp" id="bp">
+  <div class="bp-toggle" onclick="toggleBP()">
+    <span class="bp-icon">💬</span>
+    <span class="bp-text" id="bp-short">Загрузка...</span>
+    <span class="bp-arr" id="bp-arr">▲</span>
+  </div>
+  <div class="bp-body" id="bp-body">
+    <div class="bp-inner">
+      <div class="bp-day" id="bp-day"></div>
+      <div class="bp-quote" id="bp-quote"></div>
+      <div class="bp-sec">Погода — выбери город</div>
+      <div class="city-list" id="city-list"></div>
+      <div class="add-city-row">
+        <input class="add-city-inp" id="city-inp" placeholder="Город (напр. Frankfurt)" onkeydown="if(event.key==='Enter')addCity()">
+        <button class="add-city-btn" onclick="addCity()">+ Добавить</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+
+<div class="modal-ov" id="modal-ov" onclick="closeModalBg(event)">
+  <div class="modal" id="modal">
+    <div id="modal-body"></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+// ===== THEME =====
+// html.light body = light mode — cleaner approach, no class on body
+function applyTheme(t) {
+  if (t === 'light') {
+    document.documentElement.classList.add('light');
+    const btn = document.getElementById('theme-btn');
+    if (btn) btn.textContent = '🌙 Тёмная';
+  } else {
+    document.documentElement.classList.remove('light');
+    const btn = document.getElementById('theme-btn');
+    if (btn) btn.textContent = '☀️ Светлая';
+  }
+}
+function toggleTheme() {
+  const isLight = document.documentElement.classList.toggle('light');
+  applyTheme(isLight ? 'light' : 'dark');
+  localStorage.setItem('lr_theme', isLight ? 'light' : 'dark');
+}
+// Init theme immediately (no DOM needed - just sets class on html)
+(function() {
+  var t = localStorage.getItem('lr_theme') || 'dark';
+  if (t === 'light') document.documentElement.classList.add('light');
+})();
+
+// ===== NAV =====
+function sw(id, btn) {
+document.querySelectorAll(’.pg’).forEach(p => p.classList.remove(‘on’));
+document.querySelectorAll(’.nbtn’).forEach(b => b.classList.remove(‘on’));
+document.getElementById(‘pg-’ + id).classList.add(‘on’);
+btn.classList.add(‘on’);
+window.scrollTo(0, 0);
+}
+function switchDay(id, btn) {
+document.querySelectorAll(’.day-pg’).forEach(p => p.classList.remove(‘on’));
+document.querySelectorAll(’.dtab’).forEach(b => b.classList.remove(‘on’));
+document.getElementById(‘day-’ + id).classList.add(‘on’);
+btn.classList.add(‘on’);
+}
+
+// ===== CHECKLIST =====
+function tc(el) {
+el.classList.toggle(‘done’);
+el.querySelector(’.ci-box’).classList.toggle(‘done’);
+}
+
+// ===== SHOP =====
+function ts(el) {
+el.classList.toggle(‘done’);
+el.querySelector(’.sbox’).classList.toggle(‘done’);
+updateTotal();
+}
+function updateTotal() {
+let t = 0;
+document.querySelectorAll(’#shoplist .shop-item’).forEach(i => {
+if (!i.classList.contains(‘done’)) t += parseFloat(i.dataset.p || 0);
+});
+const el = document.getElementById(‘total-val’);
+if (el) el.textContent = ‘~’ + Math.round(t) + ‘€’;
+}
+
+// ===== TOAST =====
+function toast(msg) {
+const t = document.getElementById(‘toast’);
+if (!t) return;
+t.textContent = msg;
+t.classList.add(‘show’);
+setTimeout(() => t.classList.remove(‘show’), 2500);
+}
+
+// ===== MODAL =====
+const R = {
+eggs_boiled:{t:‘🥚 Варёные яйца’,s:‘3 шт · ~21г белка’,steps:[{n:‘1’,x:‘Яйца в кастрюлю, залей <b>холодной водой</b> (вода покрывает на 2 см).’},
+{n:‘2’,x:‘Поставь на средний огонь. Жди закипания.’},
+{n:‘3’,x:‘Как закипело — засекай: <b>7 мин = мягкий желток</b>, <b>10 мин = твёрдый</b>.’},
+{n:‘4’,x:‘Слей воду, залей холодной на 2 мин — легче чистятся.’},
+{n:‘5’,x:‘Почисти, посоли, ешь.’,img:‘https://images.unsplash.com/photo-1607690424560-35d967d95f65?w=320&q=70’}],
+tip:‘Готовь сразу 8–10 шт на несколько дней.’,store:‘В скорлупе: 7 дней. Без скорлупы в воде: 3 дня.’},
+eggs_fried:{t:‘🍳 Яичница’,s:‘3 яйца · ~18г белка’,steps:[{n:‘1’,x:‘Разбей 3 яйца в тарелку, щепотка соли.’},
+{n:‘2’,x:‘Сковорода на средний огонь, <b>несколько капель оливкового масла</b>.’},
+{n:‘3’,x:‘Вылей яйца. Жди <b>2–3 минуты</b> пока белок схватится.’,img:‘https://images.unsplash.com/photo-1510693206972-df098062cb71?w=320&q=80’},
+{n:‘4’,x:‘Огонь выключи когда желток ещё чуть жидкий.’}],
+tip:‘Добавь нарезанный перец или помидор — вкуснее и больше витаминов.’,store:‘Только свежая — 5 минут готовки.’},
+oatmeal:{t:‘🌾 Овсянка’,s:‘60г сухой · ~11г белка · ~40г углеводов’,steps:[{n:‘1’,x:‘Отмерь <b>60г овсянки</b> (5 ст.л.) в тарелку.’},
+{n:‘2’,x:‘Залей <b>150–200 мл горячей воды</b> или молока.’,img:‘https://images.unsplash.com/photo-1495214783159-3503fd1b572d?w=320&q=70’},
+{n:‘3’,x:‘Перемешай, подожди <b>3–5 минут</b> — набухнет.’},
+{n:‘4’,x:‘Добавь банан, ягоды или орехи 15г.’}],
+tip:‘Залей с вечера — утром готово без готовки (overnight oats).’,store:‘Готовая: 2 дня в холодильнике.’},
+chicken:{t:‘🍗 Куриная грудка’,s:‘180г · ~40г белка · мало жира’,steps:[{n:‘1’,x:‘Промой, обсуши. Посоли и поперчи с обеих сторон.’},
+{n:‘2’,x:’<b>Духовка (лучший вариант):</b> 200°C, 25–30 мин. Накрой фольгой первые 15 мин.’,img:‘https://images.unsplash.com/photo-1604503468506-a8da13d82791?w=320&q=70’},
+{n:‘3’,x:’<b>Варка (для meal prep):</b> залей водой, вари <b>20–25 мин</b> после закипания.’},
+{n:‘4’,x:’<b>Сковорода:</b> масло 1 ч.л., по <b>4–5 мин с каждой стороны</b>, накрой крышкой 5 мин.’},
+{n:‘5’,x:‘Готовность: разрежь — внутри белое, без розового.’}],
+tip:‘Готовь сразу 1.2–1.5 кг в субботу. Нарежь кубиками по контейнерам.’,store:‘В холодильнике: 4 дня. В морозилке: 3 месяца.’},
+fish:{t:‘🐟 Рыба (минтай/лосось)’,s:‘180г · ~35г белка · Omega-3’,steps:[{n:‘1’,x:‘Если замороженная — разморозь в холодной воде 30 мин.’},
+{n:‘2’,x:‘Посоли, поперчи, можно лимонный сок.’},
+{n:‘3’,x:’<b>Духовка:</b> 180°C, <b>15–20 мин</b> в фольге — сочнее.’},
+{n:‘4’,x:’<b>Сковорода:</b> масло 1 ч.л., по <b>3–4 мин с каждой стороны</b>.’},
+{n:‘5’,x:‘Готовность: рыба легко разделяется вилкой.’}],
+tip:‘Минтай (Seelachs) дешевле лосося, белка столько же. Покупай замороженный.’,store:‘Готовая: 3 дня в холодильнике.’},
+minced:{t:‘🥩 Фарш говяжий’,s:‘180г · ~28г белка’,steps:[{n:‘1’,x:‘Сковорода на средний-сильный огонь, масло 1 ч.л.’},
+{n:‘2’,x:‘Выложи фарш, разломай лопаткой. Соль, перец.’},
+{n:‘3’,x:‘Жарь <b>8–10 мин</b>, помешивая, до исчезновения розового.’,img:‘https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=320&q=80’},
+{n:‘4’,x:‘Добавь лук и перец — вкуснее.’}],
+tip:‘Putenhackfleisch (индюшачий) — меньше жира, больше белка.’,store:‘Сырой: 1–2 дня. Готовый: 4 дня.’},
+rice:{t:‘🍚 Рис’,s:‘80г сухого → ~240г варёного’,steps:[{n:‘1’,x:‘Промой рис 2–3 раза до прозрачной воды.’},
+{n:‘2’,x:‘Залей водой <b>1:2</b> (80г риса → 160 мл воды). Соль.’},
+{n:‘3’,x:‘Закипело → <b>минимум огонь, крышка, 15–18 мин</b>.’},
+{n:‘4’,x:‘Выключить, оставить под крышкой <b>5 мин</b>.’}],
+tip:‘Готовь сразу 350г сухого в субботу — на 3–4 дня.’,store:‘В холодильнике: 5 дней. Разогревай с 1 ст.л. воды.’},
+buckwheat:{t:‘🌿 Гречка’,s:‘80г сухой → ~220г варёной’,steps:[{n:‘1’,x:‘Промой 1–2 раза.’},
+{n:‘2’,x:‘Залей водой <b>1:2</b>. Соль.’},
+{n:‘3’,x:‘Закипело → <b>минимум огонь, крышка, 15 мин</b>.’},
+{n:‘4’,x:‘Выключить, укутай полотенцем <b>10 мин</b> — станет рассыпчатой.’}],
+tip:‘Можно запарить кипятком в термосе с вечера — утром готово без плиты.’,store:‘В холодильнике: 5 дней.’},
+veggies:{t:‘🥦 Варёные/запечённые овощи’,s:‘без лимита · клетчатка · витамины’,steps:[{n:‘1’,x:’<b>Брокколи на пару:</b> вода 2 см в кастрюле, доведи до кипения. Брокколи на решётку сверху. <b>5–7 мин</b>.’},
+{n:‘2’,x:’<b>Духовка:</b> 200°C, 15 мин с оливковым маслом и солью. Вкуснее.’,img:‘https://images.unsplash.com/photo-1459411621453-7b03977f4bfc?w=320&q=80’},
+{n:‘3’,x:‘Добавь <b>1 ст.л. оливкового масла</b> и соль.’}],
+tip:‘Нарежь все овощи сразу в субботу — берёшь горсть и добавляешь к еде.’,store:‘Варёная брокколи: 3 дня. Нарезанные сырые: 3 дня.’},
+veggies_raw:{t:‘🥒 Сырые овощи’,s:‘огурец + помидор · витамины’,steps:[{n:‘1’,x:‘Промой под водой.’},
+{n:‘2’,x:‘Нарежь ломтиками. Щепотка соли.’},
+{n:‘3’,x:‘Всё. Ничего готовить не нужно.’}],
+tip:‘Нарежь сразу несколько и убери в контейнер — готов быстрый перекус.’,store:‘Нарезанные в контейнере: 2 дня.’},
+yogurt:{t:‘🥛 Греческий йогурт’,s:‘200г · ~20г белка · 0% жира’,steps:[{n:‘1’,x:‘Берёшь Griechischer Joghurt 0% Fett из холодильника.’},
+{n:‘2’,x:‘Можно добавить ягоды (50–100г) или банан.’},
+{n:‘3’,x:’<b>Не добавляй мёд или сахар</b> — обнуляет смысл.’}],
+tip:‘Если кислый — добавь немного корицы. Вкус меняет, калорий нет.’,store:‘Открытый: 2–3 дня.’},
+quark:{t:‘🧀 Творог / Magerquark’,s:‘200г · ~28г белка · мало жира’,steps:[{n:‘1’,x:‘Берёшь Magerquark (Speisequark Magerstufe) из холодильника.’},
+{n:‘2’,x:‘Ешь как есть или смешай с ягодами / бананом.’},
+{n:‘3’,x:‘Лучший продукт для ужина — высокий белок, медленное усвоение.’}],
+tip:‘200г Magerquark = почти 30г белка. Один из лучших продуктов для похудения.’,store:‘Открытый: 3–4 дня.’},
+bread_toast:{t:‘🍞 Цельнозерновой хлеб’,s:‘1 кусок ~40г · медленные углеводы’,steps:[{n:‘1’,x:‘Ищи <b>Vollkornbrot</b> — тёмный плотный хлеб.’},
+{n:‘2’,x:‘1 кусок на завтрак. Без сливочного масла.’},
+{n:‘3’,x:‘Можно поджарить — вкуснее.’}],
+tip:‘Проверяй состав: первый ингредиент — Vollkornmehl, не Weizenmehl.’,store:‘При комнатной температуре: 3–4 дня.’},
+banana:{t:‘🍌 Банан’,s:‘1 шт ~100г · ~25г углеводов · калий’,steps:[{n:‘1’,x:‘К завтраку или перекусу. Добавляй в овсянку.’},
+{n:‘2’,x:‘Чуть зелёный — медленнее усваивается, лучше для сахара в крови.’}],
+tip:‘Отличен перед тренировкой — быстрая энергия.’,store:‘При комнатной: 5 дней. В холодильнике кожура чернеет — это нормально.’},
+apple:{t:‘🍎 Яблоко’,s:‘1 шт ~150г · клетчатка · витамин C’,steps:[{n:‘1’,x:‘Мой и ешь с кожурой — в ней клетчатка.’},
+{n:‘2’,x:‘Хороший перекус — даёт сытость на 1–2 часа.’}],
+tip:‘Ешь яблоко перед орехами — меньше орехов съешь.’,store:‘При комнатной: 1 неделя. В холодильнике: 1 месяц.’},
+berries:{t:‘🫐 Ягоды замороженные’,s:‘100г · антиоксиданты · мало калорий’,steps:[{n:‘1’,x:‘Достань с вечера в холодильник или разморозь 10 мин при комнатной.’},
+{n:‘2’,x:‘Добавляй в овсянку или йогурт.’}],
+tip:‘Замороженные = те же витамины, но дешевле и всегда есть в морозилке.’,store:‘В морозилке: 1 год. Размороженные: 1 день.’},
+nuts:{t:‘🥜 Орехи’,s:‘строго 15г · ~9г жира · ~4г белка’,steps:[{n:‘1’,x:’<b>Отмерь ровно 15г</b> — это ~12–15 миндалин или 6–8 грецких.’},
+{n:‘2’,x:‘Не ешь из пакета — только отмеряй. Из пакета всегда в 3 раза больше.’}],
+tip:‘15г орехов = ~90 ккал. Горсть “на глаз” = обычно 300+ ккал.’,store:‘В закрытом пакете: 3 месяца.’},
+cal_mag:{t:‘💊 Calcium + Magnesium + Zinc + D3’,s:‘WeightWorld — вечером после ужина’,steps:[{n:‘1’,x:‘Принимай <b>после ужина (~21:30)</b>.’},
+{n:‘2’,x:‘Запивай стаканом воды.’},
+{n:‘3’,x:‘Дозировка: смотри на упаковке (обычно 2–4 таблетки).’},
+{n:‘4’,x:‘Магний расслабляет и улучшает сон — поэтому вечером.’}],
+tip:‘Не принимай на голодный желудок — дискомфорт в животе.’,store:‘Закрытая банка, сухое место, не на солнце.’},
+omega3:{t:‘🐟 Omega-3 1000 — Mivolis’,s:‘1 капсула = 300 мг EPA+DHA’,steps:[{n:‘1’,x:’<b>1 капсула с едой</b> — обед или ужин. С едой усваивается лучше.’},
+{n:‘2’,x:‘Принимай каждый день — Омега-3 накапливается, эффект через 4–6 недель.’}],
+tip:‘Рыбный запах? Храни капсулы в морозилке — помогает на 100%.’,store:‘После вскрытия — в холодильнике.’},
+vitd3:{t:‘☀️ Vitamin D3 2500 I.E. — Taxofit’,s:‘Только если пропустил WeightWorld’,steps:[{n:‘1’,x:’<b>ВАЖНО:</b> В WeightWorld уже есть D3. Taxofit — только если пропустил WeightWorld.’},
+{n:‘2’,x:‘1 таблетка в день максимум.’},
+{n:‘3’,x:‘Лучше утром или в обед — D3 усваивается с жирной едой.’}],
+tip:‘В Германии дефицит D3 очень частый — октябрь–апрель особенно важно.’,store:‘Беречь от влаги, комнатная температура.’},
+meal_prep_sat:{t:‘📋 Субботний Meal Prep’,s:‘Готовишь на 3–4 дня · ~1.5 часа’,steps:[{n:‘1’,x:’<b>Запусти рис</b> (350г): промой, 1:2 воды, закипело → минимум огонь, крышка, 18 мин.’},
+{n:‘2’,x:’<b>Курицу</b> (1.2–1.5 кг): в духовку 200°C, 30 мин, накрой фольгой.’},
+{n:‘3’,x:’<b>Яйца</b> (8 шт): поставь вариться — 10 мин после закипания.’},
+{n:‘4’,x:’<b>Пока всё готовится</b> — нарежь все овощи, сложи в контейнер.’},
+{n:‘5’,x:‘Курица готова → нарежь кубиками. Разложи по контейнерам: белок + крупа + овощи = 1 обед.’}],
+tip:‘1.5 часа в субботу = еда готова за 3 минуты следующие 4 дня.’,store:‘Всё в холодильнике: до 4 дней.’},
+meal_prep_wed:{t:‘📋 Среда — второй Meal Prep’,s:‘Рыба + гречка на Чт/Пт · ~45 мин’,steps:[{n:‘1’,x:’<b>Гречку</b> (300г): промой, 1:2 воды, закипело → минимум, крышка, 15 мин. Укутать 10 мин.’},
+{n:‘2’,x:’<b>Рыбу/фарш</b> (800г–1 кг): рыбу в духовку 180°C 20 мин. Фарш на сковороде 10 мин.’},
+{n:‘3’,x:‘Нарежь свежие овощи в контейнер.’},
+{n:‘4’,x:‘Разложи по контейнерам на Чт и Пт.’}],
+tip:‘Не смешивай рыбу и молочные продукты в одном контейнере.’,store:‘В холодильнике: до 4 дней.’},
+workout_morning:{t:‘💪 Утренний комплекс’,s:‘8 минут · каждый день до душа’,steps:[
+{n:‘1’,x:’<b>Отжимания (Liegestütze)</b> — 10–15 раз. Руки чуть шире плеч, грудь почти касается пола.’,img:‘https://images.unsplash.com/photo-1601422407692-ec4eeec1d9b3?w=320&q=80’},
+{n:‘2’,x:’<b>Приседания (Kniebeugen)</b> — 15–20 раз. Ноги шире плеч, колени не выходят за носки.’,img:‘https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=320&q=80’},
+{n:‘3’,x:’<b>Планка (Plank)</b> — 30–40 сек. Упор на предплечья, тело прямое. Таз не поднимать.’,img:‘https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=320&q=80’},
+{n:‘4’,x:’<b>Альпинист (Mountain Climbers)</b> — 20 раз. Упор лёжа, поочерёдно колени к груди быстро.’},
+{n:‘5’,x:’<b>Прыжки (Jumping Jacks)</b> — 30 раз. Ноги в стороны + руки вверх одновременно.’}],
+tip:‘Если плохо поспал — делай половину. Но НЕ пропускай. Привычка важнее объёма.’,store:null},
+workout_full:{t:‘💪 Вечерний комплекс’,s:‘15–20 мин · Пн / Ср / Пт’,steps:[
+{n:‘1’,x:’<b>Отжимания</b> — повторы по неделям (смотри вкладку Тренировки). Пауза внизу 1 сек с 5-й недели.’,img:‘https://images.unsplash.com/photo-1601422407692-ec4eeec1d9b3?w=320&q=80’},
+{n:‘2’,x:’<b>Приседания</b> — медленно 3 сек вниз с 5-й недели. Спина прямая всегда.’,img:‘https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=320&q=80’},
+{n:‘3’,x:’<b>Планка</b> — держи дольше каждые 2 недели. С 5-й недели добавь подъём ноги.’,img:‘https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=320&q=80’},
+{n:‘4’,x:’<b>Боковая планка</b> — 20–30 сек каждая сторона. Таз не опускай.’},
+{n:‘5’,x:‘Отдых между кругами: нед. 1–2 = 60 сек · нед. 3–4 = 45 сек · нед. 5+ = 30 сек.’}],
+tip:‘Увеличивай нагрузку только когда сделал все круги без “умирания”.’,store:null},
+workout_stretch:{t:‘🧘 Вечерняя растяжка’,s:‘10 мин · Вт / Чт / Сб’,steps:[
+{n:‘1’,x:’<b>Шея</b> — наклони голову вправо, задержи 30 сек. Влево 30 сек.’},
+{n:‘2’,x:’<b>Плечи и грудь</b> — руки сцепи за спиной, потяни назад-вниз 30 сек. Раскрывает грудь от сидячей работы.’},
+{n:‘3’,x:’<b>Поясница</b> — лёг на спину, подтяни оба колена к груди. Покачайся 30 сек.’},
+{n:‘4’,x:’<b>Бёдра</b> — сидя, одну ногу вытяни, потянись к ней 30 сек каждая.’},
+{n:‘5’,x:’<b>Икры</b> — упрись в стену, одну ногу назад, пятка в пол. 30 сек каждая.’},
+{n:‘6’,x:’<b>Финал</b> — лёг на спину, раскинь руки и ноги, глубокое дыхание 1 мин. Снижает кортизол.’}],
+tip:‘Растяжка вечером → лучше спишь → лучше восстановление → вес уходит быстрее.’,store:null}
+};
+
+function openR(key) {
+const r = R[key];
+if (!r) return;
+let h = ‘<button class="modal-close" onclick="closeModal()">✕</button>’;
+h += ‘<div class="modal-title">’ + r.t + ‘</div>’;
+h += ‘<div class="modal-sub">’ + r.s + ‘</div>’;
+r.steps.forEach(s => {
+h += ‘<div class="r-step"><div class="step-n">’ + s.n + ‘</div><div class="step-x">’ + s.x;
+if (s.img) h += ‘<img class="step-img" src="' + s.img + '" loading="lazy" alt="">’;
+h += ‘</div></div>’;
+});
+if (r.tip) h += ’<div class="r-tip">💡 ’ + r.tip + ‘</div>’;
+if (r.store) h += ’<div class="r-store">🧊 ’ + r.store + ‘</div>’;
+document.getElementById(‘modal-body’).innerHTML = h;
+document.getElementById(‘modal-ov’).classList.add(‘open’);
+document.body.style.overflow = ‘hidden’;
+}
+function closeModal() {
+document.getElementById(‘modal-ov’).classList.remove(‘open’);
+document.body.style.overflow = ‘’;
+}
+function closeModalBg(e) {
+if (e.target === document.getElementById(‘modal-ov’)) closeModal();
+}
+function openMaps() {
+window.open(‘https://maps.app.goo.gl/SjwU1HGBmjUwMSBDA’, ‘_blank’);
+}
+
+// ===== WEIGHT TRACKER =====
+function addWeight() {
+const v = parseFloat(document.getElementById(‘w-inp’).value);
+if (isNaN(v) || v < 30 || v > 300) return;
+const h = JSON.parse(localStorage.getItem(‘lr_w’) || ‘[]’);
+const now = new Date();
+const d = now.toLocaleDateString(‘ru-RU’, {day:‘2-digit’, month:‘2-digit’});
+const tm = now.toLocaleTimeString(‘ru-RU’, {hour:‘2-digit’, minute:‘2-digit’});
+h.push({d, t: tm, v: Math.round(v * 10) / 10});
+localStorage.setItem(‘lr_w’, JSON.stringify(h));
+document.getElementById(‘w-inp’).value = ‘’;
+renderW();
+toast(‘Записано: ’ + Math.round(v * 10) / 10 + ’ кг’);
+}
+function editW(i) {
+const h = JSON.parse(localStorage.getItem(‘lr_w’) || ‘[]’);
+const el = document.getElementById(‘we’ + i);
+if (!el) return;
+const inp = document.createElement(‘input’);
+inp.type = ‘number’; inp.step = ‘0.1’; inp.value = h[i].v;
+inp.style.cssText = ‘width:60px;background:var(–bg3);border:1px solid var(–border2);border-radius:6px;padding:2px 6px;color:var(–text);font-size:12px;font-family:inherit’;
+const ok = document.createElement(‘button’);
+ok.textContent = ‘OK’;
+ok.style.cssText = ‘background:var(–green);border:none;border-radius:6px;padding:2px 8px;color:white;font-size:11px;cursor:pointer;margin-left:4px’;
+ok.onclick = () => {
+const nv = parseFloat(inp.value);
+if (!isNaN(nv) && nv > 30 && nv < 300) { h[i].v = Math.round(nv * 10) / 10; localStorage.setItem(‘lr_w’, JSON.stringify(h)); }
+renderW();
+};
+el.innerHTML = ‘’; el.appendChild(inp); el.appendChild(ok); inp.focus(); inp.select();
+}
+function delW(i) {
+const h = JSON.parse(localStorage.getItem(‘lr_w’) || ‘[]’);
+const e = h[i]; h.splice(i, 1);
+localStorage.setItem(‘lr_w’, JSON.stringify(h));
+renderW();
+toast(‘Удалено: ’ + e.d + ’ ’ + (e.t || ‘’) + ’ — ’ + e.v + ’ кг’);
+}
+function renderW() {
+const h = JSON.parse(localStorage.getItem(‘lr_w’) || ‘[]’);
+const el = document.getElementById(‘w-hist’);
+if (!el) return;
+if (!h.length) { el.innerHTML = ‘<span style="color:var(--text3);font-size:13px">Нет записей</span>’; return; }
+const last = h[h.length - 1].v;
+const diff = (last - 96.5).toFixed(1);
+const col = parseFloat(diff) <= 0 ? ‘var(–green-text)’ : ‘var(–red-text)’;
+el.innerHTML = h.slice().reverse().map((e, ri) => {
+const i = h.length - 1 - ri;
+return ‘<span class="w-entry"><span id="we' + i + '">’ + e.d + (e.t ? ’ ’ + e.t : ‘’) + ’ — ’ + e.v + ’ кг</span> <button class="w-edit-btn" onclick="editW(' + i + ')">изм.</button> <button class="w-del-btn" onclick="delW(' + i + ')">×</button></span>’;
+}).join(’’) + ‘<div style="margin-top:10px;font-size:13px;color:var(--text2)">Старт: <b style="color:var(--text)">96.5 кг</b> → Сейчас: <b style="color:var(--text)">’ + last + ’ кг</b> → <b style="color:' + col + '">’ + (parseFloat(diff) > 0 ? ‘+’ : ‘’) + diff + ’ кг</b></div>’;
+}
+
+// ===== WEEKS =====
+function renderWeeks() {
+const done = JSON.parse(localStorage.getItem(‘lr_wk’) || ‘[]’);
+const c = document.getElementById(‘week-tracker’);
+if (!c) return;
+c.innerHTML = ‘’;
+for (let i = 1; i <= 16; i++) {
+const d = document.createElement(‘div’);
+d.className = ‘wk-card’ + (done.includes(i) ? ’ done’ : ‘’);
+d.innerHTML = ‘<div class="wk-num">’ + i + ‘</div><div class="wk-label">’ + (done.includes(i) ? ‘✓ готово’ : ‘неделя’) + ‘</div>’;
+d.onclick = () => toggleWk(i);
+c.appendChild(d);
+}
+}
+function toggleWk(n) {
+let d = JSON.parse(localStorage.getItem(‘lr_wk’) || ‘[]’);
+d.includes(n) ? d = d.filter(x => x !== n) : d.push(n);
+localStorage.setItem(‘lr_wk’, JSON.stringify(d));
+renderWeeks();
+}
+function doResetWeeks_confirm() {
+localStorage.removeItem(‘lr_wk’);
+renderWeeks();
+toast(‘Недели сброшены’);
+}
+function resetWeeks() {
+const d = JSON.parse(localStorage.getItem(‘lr_wk’) || ‘[]’);
+if (!d.length) { toast(‘Нечего сбрасывать’); return; }
+const btn = document.getElementById(‘wk-reset-btn’);
+if (btn && btn.dataset.confirm !== ‘1’) {
+btn.textContent = ‘Точно сбросить?’;
+btn.dataset.confirm = ‘1’;
+setTimeout(() => { btn.textContent = ‘Сбросить все недели’; btn.dataset.confirm = ‘0’; }, 3000);
+return;
+}
+localStorage.removeItem(‘lr_wk’);
+renderWeeks();
+toast(‘Недели сброшены’);
+if (btn) { btn.textContent = ‘Сбросить все недели’; btn.dataset.confirm = ‘0’; }
+}
+
+// ===== WEATHER =====
+const WX_CODES = {0:‘☀️ Ясно’,1:‘🌤 Малооблачно’,2:‘⛅ Облачно’,3:‘☁️ Пасмурно’,45:‘🌫 Туман’,51:‘🌦 Морось’,61:‘🌧 Дождь’,63:‘🌧 Дождь’,65:‘🌧 Ливень’,71:‘🌨 Снег’,73:‘🌨 Снег’,75:‘❄️ Буран’,80:‘🌦 Ливень’,81:‘🌦 Ливень’,82:‘⛈ Шторм’,95:‘⛈ Гроза’,96:‘⛈ Гроза с градом’};
+const UV_LABELS = [‘Мин’,‘Низкий’,‘Умеренный’,‘Высокий’,‘Высокий’,‘Оч.высокий’,‘Опасный’];
+
+async function loadWeather(lat, lon, name) {
+const setEl = (id, val) => { const e = document.getElementById(id); if (e) e.textContent = val; };
+try {
+setEl(‘w-city’, name.toUpperCase() + ’ — СЕЙЧАС’);
+setEl(‘w-desc’, ‘Загрузка…’);
+const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weathercode,wind_speed_10m,relative_humidity_2m,uv_index&hourly=temperature_2m,weathercode&timezone=auto&forecast_days=1`;
+const r = await fetch(url);
+const d = await r.json();
+const c = d.current;
+setEl(‘w-temp’, Math.round(c.temperature_2m) + ‘°C’);
+setEl(‘w-desc’, WX_CODES[c.weathercode] || ‘🌡 Переменно’);
+setEl(‘w-wind’, ‘💨 ’ + Math.round(c.wind_speed_10m) + ’ км/ч’);
+setEl(‘w-humid’, ‘💧 ’ + c.relative_humidity_2m + ‘%’);
+const uv = Math.round(c.uv_index || 0);
+const uvLabel = uv <= 2 ? ‘Мин’ : uv <= 5 ? ‘Умеренный’ : uv <= 7 ? ‘Высокий’ : uv <= 10 ? ‘Оч.высокий’ : ‘Опасный’;
+setEl(‘w-uv’, ‘🌞 UV ’ + uv + ’ (’ + uvLabel + ‘)’);
+// UV bar
+const uvBar = document.getElementById(‘uv-bar’);
+const uvDot = document.getElementById(‘uv-dot’);
+const uvVal = document.getElementById(‘uv-val’);
+if (uvBar && uvDot) {
+uvBar.style.display = ‘flex’;
+const pct = Math.min(100, (uv / 12) * 100);
+uvDot.style.left = ‘calc(’ + pct + ‘% - 5px)’;
+if (uvVal) uvVal.textContent = uv + ’ — ’ + uvLabel;
+}
+// Forecast next 6 hours
+const fc = document.getElementById(‘w-forecast’);
+if (fc && d.hourly) {
+const now = new Date();
+const nowH = now.getHours();
+let slots = ‘’;
+let count = 0;
+for (let i = 0; i < d.hourly.time.length && count < 6; i++) {
+const t = new Date(d.hourly.time[i]);
+if (t <= now) continue;
+const h = t.getHours();
+const icon = (WX_CODES[d.hourly.weathercode[i]] || ‘🌡’).split(’ ’)[0];
+slots += ‘<div class="wf-slot"><div class="wf-time">’ + String(h).padStart(2,‘0’) + ‘:00</div><div class="wf-icon">’ + icon + ‘</div><div class="wf-temp">’ + Math.round(d.hourly.temperature_2m[i]) + ‘°</div></div>’;
+count++;
+}
+fc.innerHTML = slots;
+}
+} catch(e) {
+setEl(‘w-desc’, ‘Нет соединения’);
+}
+}
+
+// ===== CITY MANAGER =====
+const DEFAULT_CITIES = [{“name”:“Chemnitz”,“lat”:50.8333,“lon”:12.9167},{“name”:“Frankfurt”,“lat”:50.11,“lon”:8.68},{“name”:“Berlin”,“lat”:52.52,“lon”:13.405},{“name”:“Köln”,“lat”:50.938,“lon”:6.96},{“name”:“Leipzig”,“lat”:51.34,“lon”:12.37},{“name”:“Dresden”,“lat”:51.05,“lon”:13.74},{“name”:“München”,“lat”:48.137,“lon”:11.575},{“name”:“Hamburg”,“lat”:53.551,“lon”:9.993},{“name”:“Istanbul”,“lat”:41.01,“lon”:28.95},{“name”:“Aşgabat 🇹🇲”,“lat”:37.9,“lon”:58.38},{“name”:“Türkmenabat 🇹🇲”,“lat”:39.07,“lon”:63.57}];
+
+function getCities() {
+try { return JSON.parse(localStorage.getItem(‘lr_cities’) || ‘null’) || DEFAULT_CITIES; } catch(e) { return DEFAULT_CITIES; }
+}
+function saveCities(cities) {
+localStorage.setItem(‘lr_cities’, JSON.stringify(cities));
+}
+function getActiveLoc() {
+try { return JSON.parse(localStorage.getItem(‘lr_loc’) || ‘null’) || DEFAULT_CITIES[0]; } catch(e) { return DEFAULT_CITIES[0]; }
+}
+function setActiveLoc(city) {
+localStorage.setItem(‘lr_loc’, JSON.stringify(city));
+loadWeather(city.lat, city.lon, city.name);
+renderCityList();
+}
+
+function renderCityList() {
+const list = document.getElementById(‘city-list’);
+if (!list) return;
+const cities = getCities();
+const active = getActiveLoc();
+list.innerHTML = ‘’;
+cities.forEach((city, i) => {
+const isActive = city.name === active.name;
+const div = document.createElement(‘div’);
+div.className = ‘city-item’;
+div.innerHTML = ‘<div class="' + (isActive ? 'city-active' : 'city-inactive') + '"></div>’ +
+‘<span class="city-name">’ + city.name + ‘</span>’ +
+‘<button class="city-del" data-idx="' + i + '">×</button>’;
+div.querySelector(’.city-del’).addEventListener(‘click’, function(e) {
+e.stopPropagation(); delCity(parseInt(this.dataset.idx));
+});
+div.addEventListener(‘click’, function() { setActiveLoc(cities[i]); });
+list.appendChild(div);
+});
+}
+
+function delCity(i) {
+const cities = getCities();
+const active = getActiveLoc();
+const deleted = cities[i];
+cities.splice(i, 1);
+saveCities(cities);
+if (deleted.name === active.name && cities.length > 0) setActiveLoc(cities[0]);
+else renderCityList();
+toast(deleted.name + ’ удалён’);
+}
+
+async function addCity() {
+const inp = document.getElementById(‘city-inp’);
+const name = inp.value.trim();
+if (!name) return;
+inp.value = ‘’;
+try {
+toast(’Ищем ’ + name + ‘…’);
+const r = await fetch(‘https://geocoding-api.open-meteo.com/v1/search?name=’ + encodeURIComponent(name) + ‘&count=1&language=ru’);
+const d = await r.json();
+if (!d.results || !d.results.length) { toast(‘Город не найден: ’ + name); return; }
+const found = d.results[0];
+const city = {name: found.name + (found.country_code ? ’ (’ + found.country_code + ‘)’ : ‘’), lat: found.latitude, lon: found.longitude};
+const cities = getCities();
+if (cities.some(c => c.name === city.name)) { toast(’Уже есть: ’ + city.name); return; }
+cities.push(city);
+saveCities(cities);
+renderCityList();
+toast(’Добавлен: ’ + city.name);
+} catch(e) { toast(‘Ошибка поиска’); }
+}
+
+// ===== MOTIVATION =====
+const MOTIV = [
+“Первый шаг сделан. Продолжай.”,“Каждый день без сахара — победа.”,“Вес уходит медленно. Это нормально.”,“Ты делаешь это для семьи.”,“Завтрак пропустил? Следующий приём — по плану.”,“Сила не в мышцах, а в привычке.”,“Один плохой день не отменяет хорошую неделю.”,“Твоё тело меняется — даже если весы стоят.”,“Креатин работает — ты просто ещё не видишь.”,“8 минут утром меняют весь день.”,“Готовая еда = меньше срывов.”,“Вода. 2 литра. Сегодня.”,“Живот уходит последним. Держись.”,“Ты уже лучше, чем месяц назад.”,“Не сравнивай себя с другими — только с вчерашним собой.”,“Гречка скучная? Зато результат нет.”,“Сон это тренировка. Ложись до 23:30.”,“Твоя дочь видит пример. Ты даёшь его каждый день.”,“Дефицит калорий — единственное что работает.”,“Движение 10 минут в обед меняет метаболизм.”,“Ты не на диете. Ты меняешь образ жизни.”,“Один пропущенный день — не повод бросать.”,“Белок в каждом приёме пищи. Без исключений.”,“Маленькие победы складываются в большие.”,“Холодильник полный — срывы редкие.”,“Усталость от правильного питания проходит через 2 недели.”,“Твоё тело адаптируется. Продолжай давить.”,“Орехи — только 15г. Взвесь один раз.”,“Без масла в сковороде — на 200 ккал меньше в день.”,“Минус 0.5 кг в неделю — это уже 2 кг в месяц.”,“Ты работаешь. Ты учишься. Ты отец. И ты ещё это делаешь.”,“Не идеально. Но стабильно.”,“Движение — лекарство от усталости.”,“Выпечки нет дома — выпечки нет в желудке.”,“Каждый шаг до садика — уже движение.”,“Бег начнётся позже. Сначала привычка.”,“Один кусок хлеба в день — норм. Два — уже лишнее.”,“Кофе без сахара это привычка. Она формируется за 21 день.”,“Ты на 1% лучше каждый день.”,“Через 3 месяца — минус 10 кг. Арифметика.”,“Стабильность бьёт интенсивность.”,“Мотивация приходит после действия. Не жди её.”,“Завтрак — инвестиция в энергию до обеда.”,“Голод ≠ желание поесть. Попробуй воды сначала.”,“Ужин без круп — это не наказание. Это выбор.”,“Второй ребёнок скоро. Ты уже готовишься.”,“Хочешь видеть кубики? Сначала убери жир.”,“Сегодняшний дискомфорт — завтрашний результат.”,“Твой план работает. Просто следуй ему.”,“6 месяцев назад ты ещё думал об этом. Сейчас делаешь.”,“Magnesium ночью = лучший сон = меньше кортизола.”,“Одно сделанное упражнение лучше нуля идеальных.”,“Читаешь это — значит всё ещё в деле.”,“Планка 30 секунд. Завтра 35.”,“Гречка хранится 5 дней. Приготовь сегодня.”,“Масло — только ложка. Остальное — лишние калории.”,“Ты уже знаешь что делать. Просто делай.”,“Тренировка вечером лучше чем её отсутствие утром.”,“Курица сварена заранее — ты не схватишь мусор по пути.”,“Живот — последнее место где уходит жир. Но уйдёт.”,“2 л воды в день. Начни прямо сейчас.”,“Растяжка не скучная — она нужна.”,“Через неделю увидишь на весах. Не сдавайся.”,“Сон важнее тренировки. Ложись вовремя.”,“Рецидивы — часть процесса. Главное — продолжить.”,“Omega-3 сегодня принял? Проверь.”,“Ты делаешь это без зала. Это уважаемо.”,“Kreatin работает тихо. Ты заметишь через 2 недели.”,“Обед пропустить = вечером переесть. Помни об этом.”,“Веги — сколько хочешь. Это не набор веса.”,“Маленький холодильник = маленький соблазн.”,“Перекус = йогурт или фрукт. Ничего между.”,“Ты уже на 70% лучше большинства.”,“Следующая неделя начнётся лучше чем эта.”,“Движение после обеда = меньше сонливость.”,“Если поел лишнего — следующий приём чистый.”,“Прогресс нелинейный. Графики бывают вверх-вниз.”,“Ты не потерял время — ты накапливал привычки.”,“Боль в мышцах = рост. Хороший знак.”,“Сегодняшний плохой день не стирает прошлую неделю.”,“Вес стоит? Посмотри на одежду. Она сидит иначе.”,“Завтрак каждый день в одно время — стабилизирует сахар.”,“Голод через час после еды = недостаток белка.”,“Не ешь из стресса. Сначала подожди 5 минут.”,“Планируй еду на завтра сегодня вечером.”,“В пятницу можно чуть свободнее. Не в субботу.”,“Суббота = готовка. Это инвестиция в неделю.”,“Среда = второй prep. Не пропускай.”,“Сегодня 1 кг меньше чем вчера? Победа.”,“Сегодня столько же? Норм. Не сдавайся.”,“Сегодня больше? Вода. Просто вода.”,“Ты тренируешься с дочкой на прогулке — это тоже тренировка.”,“Каждый раз когда хочешь сладкого — выпей воды.”,“Кофе без сахара = 50 ккал минус в день = 1.5 кг в год.”,“Ты в Германии. Gutes Essen ist möglich.”,“QA курс, дочь, беременная жена, план питания. Ты справляешься.”,“Один хороший день за другим.”,“Весы раз в неделю. Не каждый день.”,“Фото раз в месяц. Разница видна.”,“Ты инвестируешь в здоровье — это возврат без потерь.”,“Мышцы появятся потом. Сначала жир уйдёт.”,“Через 6 месяцев ты не узнаешь себя.”,“Держись. Просто держись.”,“Ты уже не тот, кем был в начале.”,“Каждый день лучше — даже на 1%.”,“Не думай о финише. Думай о сегодня.”,“Вечерняя растяжка = завтрашняя бодрость.”,“Ты выбрал путь. Иди по нему.”,“Тело помнит каждое правильное решение.”,“Ужин готов? Хорошо. Завтрашний тоже?”,“Сон — это когда тело жжёт жир. Спи.”,“Ты вдохновляешь тех, кто смотрит на тебя.”,“Жена видит твои усилия. Дети запомнят.”,“Результат придёт. Привычка уже есть.”,“Не сравнивай месяц 1 и месяц 6. Терпение.”,“Ты лучший тренер для себя самого.”,“Завтра начнётся лучше если лечь сейчас.”,“Одна привычка тянет за собой другую.”,“Убрал сахар — убрал 400 ккал в день.”,“Планка держится дольше? Прогресс.”,“Ты думал что не сможешь. А делаешь.”,“Сегодняшний дискомфорт — это рост.”,“Мотивация угаснет. Система останется.”,“Дисциплина = свобода.”,“Ты строишь версию себя для своих детей.”,“Каждый раз когда ты выбираешь правильное — ты выигрываешь.”,“Хочешь бросить? Перечитай правило №1.”,“Системы побеждают цели. Твоя система работает.”,“Запасная еда = запасной выбор.”,“Без готовки нет результата. С готовкой — неизбежен.”,“Ты уже прошёл сколько-то недель. Не останавливайся.”,“Тело не обманешь. Оно помнит всё.”,“Маленький шаг каждый день = большой путь за год.”,“Через год ты поблагодаришь себя сегодняшнего.”,“Режим — не тюрьма. Это инструмент свободы.”,“Ты делаешь это в самое трудное время. Значит получится в любое.”,“Сын скоро родится. Покажи ему кем быть.”,“Реальный прогресс медленный. Реальный результат постоянный.”,“Вода с утра — лучший старт.”,“Не жди понедельника. Каждый день — старт.”,“Отжимания 10 сегодня, 15 через месяц.”,“Приседания без зала = рост без цены.”,“Ты уже не новичок в этом деле.”,“Дочь растёт. Ты растёшь вместе с ней.”,“Каждый правильный выбор — кирпич в фундаменте.”,“Тёмная тема выбрана — значит ты серьёзен 😄”,“Настоящий план — это тот, которого придерживаются.”,“Отдых — часть плана. Не виновность.”,“Ты контролируешь больше, чем думаешь.”,“Ночь прошла без срыва — ты выиграл.”,“Каждое утро — новый шанс.”,“Живот исчезает — это просто время.”,“Ты читаешь это в 22:00? Иди ложись.”,“Ты читаешь это утром? Отлично. Начни день правильно.”,“Один плохой приём пищи не ломает неделю.”,“Ты уже инвестировал слишком много чтобы бросить.”,“Осталось меньше чем прошло.”,“Ты можешь. Ты уже доказал это.”,“Правильный путь редко выглядит захватывающе. Просто иди.”,“Скука = прогресс. Захватывающее = риск срыва.”,“Finish what you started.”
+];
+
+function initMotiv() {
+const start = new Date(‘2026-04-05’);
+const diff = Math.floor((new Date() - start) / 86400000);
+const idx = ((diff % MOTIV.length) + MOTIV.length) % MOTIV.length;
+const text = MOTIV[idx];
+const short = text.length > 55 ? text.substring(0, 55) + ‘…’ : text;
+const el_s = document.getElementById(‘bp-short’);
+const el_q = document.getElementById(‘bp-quote’);
+const el_d = document.getElementById(‘bp-day’);
+if (el_s) el_s.textContent = ‘«’ + short + ‘»’;
+if (el_q) el_q.textContent = ‘«’ + text + ‘»’;
+if (el_d) el_d.textContent = ’День ’ + (diff + 1) + ’ · Цитата ’ + (idx + 1) + ’ из ’ + MOTIV.length;
+}
+
+// ===== BOTTOM PANEL =====
+function toggleBP() {
+const body = document.getElementById(‘bp-body’);
+const arr = document.getElementById(‘bp-arr’);
+if (!body) return;
+const isOpen = body.classList.toggle(‘open’);
+if (arr) arr.classList.toggle(‘open’, isOpen);
+localStorage.setItem(‘lr_bp’, isOpen ? ‘open’ : ‘closed’);
+}
+function initBP() {
+initMotiv();
+renderCityList();
+if (localStorage.getItem(‘lr_bp’) === ‘open’) {
+const body = document.getElementById(‘bp-body’);
+const arr = document.getElementById(‘bp-arr’);
+if (body) body.classList.add(‘open’);
+if (arr) arr.classList.add(‘open’);
+}
+}
+
+// ===== AUTO SELECT TODAY =====
+function initDayTab() {
+const ids = [‘sun’,‘mon’,‘tue’,‘wed’,‘thu’,‘fri’,‘sat’];
+const t = ids[new Date().getDay()];
+const b = Array.from(document.querySelectorAll(’.dtab’)).find(x => x.getAttribute(‘onclick’) && x.getAttribute(‘onclick’).includes(”’” + t + “’”));
+if (b) switchDay(t, b);
+}
+
+// ===== INIT =====
+document.addEventListener(‘DOMContentLoaded’, function() {
+// Set correct theme button label
+applyTheme(localStorage.getItem(‘lr_theme’) || ‘dark’);
+updateTotal();
+renderW();
+renderWeeks();
+initBP();
+initDayTab();
+const loc = getActiveLoc();
+loadWeather(loc.lat, loc.lon, loc.name);
+});
+</script>
+
+</body>
+</html>
